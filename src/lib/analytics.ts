@@ -98,7 +98,7 @@ class AnalyticsService {
   }
 
   // Page tracking
-  trackPageView(page: string, properties?: Record<string, unknown>): void {
+  trackPageView(page: string, properties?: Record<string, any>): void {
     if (typeof window === 'undefined') return;
 
     mixpanel.track('Page Viewed', {

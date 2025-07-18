@@ -9,6 +9,7 @@ import MultipleChoiceCard from './MultipleChoiceCard';
 type Props = {
   question: QuizQuestion;
   isMultipleChoice: boolean;
+  skipUrl: string;
 };
 
 const ROUTES = {
@@ -28,7 +29,7 @@ function saveAnswersToStorage(questionId: number, answers: string[]) {
   }
 }
 
-export default function QuizAnswers({ question, isMultipleChoice }: Props) {
+export default function QuizAnswers({ question, isMultipleChoice, skipUrl }: Props) {
   const router = useRouter();
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
 
@@ -70,6 +71,7 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
               key={index}
               questionId={question.id}
               answer={answer}
+              nextPage={skipUrl}
             />
           )
         ))}

@@ -10,6 +10,7 @@ import analytics from '@/lib/analytics';
 type Props = {
   questionId: number;
   answer: string;
+  nextPage: string;
 };
 
 const SELECTION_DELAY = 400;
@@ -74,10 +75,10 @@ export default function AnswerCard({ questionId, answer }: Props) {
   return (
     <div
       className={`
-        w-full p-4 sm:p-4 md:p-6 rounded-2xl cursor-pointer transition-all duration-300 min-h-[56px] flex items-center
+        w-full p-4 rounded-2xl cursor-pointer transition-all duration-300
         ${isSelected 
-          ? 'bg-gradient-to-r from-[#ff7eb3] to-[#ff758c] text-white shadow-lg transform scale-[0.98]' 
-          : 'bg-white/95 hover:bg-white border border-white/50 hover:border-[#ff7eb3]/50 shadow-md hover:shadow-xl active:scale-[0.98]'
+          ? 'bg-gradient-to-r from-[#ff7eb3] to-[#ff758c] text-white shadow-lg' 
+          : 'bg-white/95 hover:bg-white border border-white/50 hover:border-[#ff7eb3]/50 shadow-md hover:shadow-xl'
         }
       `}
       onClick={handleSelect}
@@ -91,15 +92,15 @@ export default function AnswerCard({ questionId, answer }: Props) {
       }}
       aria-pressed={isSelected}
     >
-      <div className="flex items-center justify-between w-full">
-        <p className={`text-sm sm:text-base md:text-lg font-semibold leading-relaxed pr-3 ${
+      <div className="flex items-center justify-between">
+        <p className={`text-base md:text-lg font-semibold ${
           isSelected ? 'text-white' : 'text-[#2b2e7a]'
         }`}>
           {answer}
         </p>
         {isSelected && (
           <div
-            className="bg-white/25 rounded-full h-7 w-7 sm:h-6 sm:w-6 flex items-center justify-center transition-all duration-300 flex-shrink-0"
+            className="bg-white/25 rounded-full h-6 w-6 flex items-center justify-center transition-all duration-300"
             aria-hidden="true"
           >
             <Check size={16} className="text-white" />

@@ -1,3 +1,5 @@
+import React from 'react';
+
 type Props = {
   progress: number;
   previousPageUrl: string | null;

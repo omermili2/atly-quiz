@@ -42,10 +42,10 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
   return (
     <div
       className={`
-        w-full p-4 sm:p-4 md:p-6 rounded-2xl cursor-pointer transition-all duration-300 min-h-[56px] flex items-center
+        w-full p-4 rounded-2xl cursor-pointer transition-all duration-300
         ${isSelected 
           ? 'bg-gradient-to-r from-[#ff7eb3] to-[#ff758c] text-white shadow-lg' 
-          : 'bg-white/95 hover:bg-white border border-white/50 hover:border-[#ff7eb3]/50 shadow-md hover:shadow-xl active:scale-[0.98]'
+          : 'bg-white/95 hover:bg-white border border-white/50 hover:border-[#ff7eb3]/50 shadow-md hover:shadow-xl'
         }
       `}
       onClick={handleSelect}
@@ -55,9 +55,9 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
       aria-label={`${isSelected ? 'Deselect' : 'Select'} ${answer}`}
       tabIndex={0}
     >
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-between">
         <p 
-          className={`text-sm sm:text-base md:text-lg font-semibold leading-relaxed pr-3 ${
+          className={`text-base md:text-lg font-semibold ${
             isSelected ? 'text-white' : 'text-[#2b2e7a]'
           }`}
         >
@@ -65,7 +65,7 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
         </p>
         <div
           className={`
-            rounded-full h-7 w-7 sm:h-6 sm:w-6 flex items-center justify-center transition-all duration-300 flex-shrink-0
+            rounded-full h-6 w-6 flex items-center justify-center transition-all duration-300
             ${isSelected 
               ? 'bg-white/25' 
               : 'border-2 border-gray-300'

@@ -62,7 +62,7 @@ export default async function QuestionPage({ params }: Props) {
   const skipUrl = getSkipUrl();
 
   return (
-    <main className="flex flex-col items-center min-h-screen px-4 py-6 sm:p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
+    <main className="flex flex-col items-center min-h-screen p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
       <QuestionTracker 
         questionId={questionIdNum}
         questionText={question.question}
@@ -70,39 +70,39 @@ export default async function QuestionPage({ params }: Props) {
         isFirstQuestion={questionIdNum === 1}
       />
       
-      {/* QuizHeader component inline - Mobile Optimized */}
-      <div className="w-full flex justify-center items-start mb-6 sm:mb-8">
+      {/* QuizHeader component inline */}
+      <div className="w-full flex justify-center items-start pt-0 -mt-8 mb-8">
         <a href="https://www.atly.com/" target="_blank" rel="noopener noreferrer">
           <img 
             src="/atly-logo.png" 
             alt="Atly logo" 
-            className="h-16 sm:h-20 md:h-28 w-auto drop-shadow-2xl rounded-2xl backdrop-blur-lg cursor-pointer hover:scale-105 transition-transform duration-200" 
+            className="h-28 w-auto drop-shadow-2xl rounded-2xl backdrop-blur-lg cursor-pointer hover:scale-105 transition-transform duration-200" 
             style={{ background: 'none' }} 
           />
         </a>
       </div>
       
-      <div className="w-full max-w-2xl px-2 sm:px-0">
-        <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-6 sm:mb-8 drop-shadow-lg leading-tight">
+      <div className="w-full max-w-2xl" style={{ marginTop: '30px' }}>
+        <h1 className="text-2xl md:text-4xl font-bold text-white mb-8 drop-shadow-lg">
           {question.question}
         </h1>
         
-        {/* QuizProgress component inline - Mobile Optimized */}
-        <div className="flex items-center justify-between mb-6 sm:mb-8 w-full">
-          <div className="flex-shrink-0 w-12 sm:w-16">
+        {/* QuizProgress component inline */}
+        <div className="flex items-center justify-between mb-8 w-full">
+          <div className="flex-shrink-0 w-16">
             {previousPageUrl ? (
               <a 
                 href={previousPageUrl} 
-                className="text-gray-300 text-sm sm:text-base hover:text-gray-200 transition-colors duration-150 flex items-center min-h-[44px] justify-center"
+                className="text-gray-300 text-base hover:text-gray-200 transition-colors duration-150 flex items-center"
               >
                 Back
               </a>
             ) : (
-              <div className="w-12 sm:w-16"></div>
+              <div></div>
             )}
           </div>
           
-          <div className="flex-1 mx-3 sm:mx-4">
+          <div className="flex-1 mx-4">
             <div className="w-full bg-white/30 rounded-full h-2.5 shadow-inner">
               <div
                 className="bg-blue-400 h-2.5 rounded-full transition-all duration-500"
@@ -111,10 +111,10 @@ export default async function QuestionPage({ params }: Props) {
             </div>
           </div>
           
-          <div className="flex-shrink-0 w-12 sm:w-16 text-right">
+          <div className="flex-shrink-0 w-16 text-right">
             <a 
               href={skipUrl} 
-              className="text-gray-300 text-sm sm:text-base hover:text-gray-200 transition-colors duration-150 min-h-[44px] flex items-center justify-center"
+              className="text-gray-300 text-base hover:text-gray-200 transition-colors duration-150"
             >
               Skip
             </a>
@@ -122,12 +122,13 @@ export default async function QuestionPage({ params }: Props) {
         </div>
 
         {isMultipleChoice && (
-          <p className="text-white/80 text-sm sm:text-base mb-4 sm:mb-6">Select all that apply</p>
+          <p className="text-white/80 text-sm mb-4">Select all that apply</p>
         )}
 
         <QuizAnswers 
           question={question}
           isMultipleChoice={isMultipleChoice}
+          skipUrl={skipUrl}
         />
       </div>
     </main>
