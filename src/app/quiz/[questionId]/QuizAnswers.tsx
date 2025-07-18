@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { type QuizQuestion, getTotalQuestions } from '@/lib/questions';
 import AnswerCard from './AnswerCard';
 import MultipleChoiceCard from './MultipleChoiceCard';
+import analytics from '@/lib/analytics';
 
 type Props = {
   question: QuizQuestion;

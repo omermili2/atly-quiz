@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { ShieldCheck, Award, Map, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import analytics from '@/lib/analytics';
 
 
 function ProofItem({ icon, text }: { icon: React.ReactNode, text: string }) {
   return (
-    <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-white/80">
-      <span className="font-bold text-xs tracking-wider uppercase !font-extrabold text-center md:text-left">{text}</span>
-      {icon}
+    <div className="flex flex-col items-center gap-1 text-white/80 text-center">
+      <span className="font-bold text-xs sm:text-sm tracking-wide uppercase font-extrabold leading-tight">{text}</span>
+      <div className="text-white/90">{icon}</div>
     </div>
   );
 }
@@ -32,7 +33,11 @@ const testimonials = [
 export default function WelcomePage() {
   // Track which testimonials are visible for staggered animation
   const [visible, setVisible] = useState<number>(0);
+  
   useEffect(() => {
+    // Track landing page load
+    analytics.trackLandingPageLoad();
+    
     let timeout: NodeJS.Timeout;
     if (visible < testimonials.length) {
       timeout = setTimeout(() => setVisible(visible + 1), 250);
@@ -40,8 +45,16 @@ export default function WelcomePage() {
     return () => clearTimeout(timeout);
   }, [visible]);
 
+  const handleContinueClick = () => {
+    analytics.trackLandingPageEngagement('continue_clicked');
+  };
+
+  const handleLogoClick = () => {
+    analytics.trackLandingPageEngagement('logo_clicked');
+  };
+
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen overflow-hidden">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
@@ -52,19 +65,18 @@ export default function WelcomePage() {
       <div className="absolute inset-0 bg-gradient-to-t from-[#5a2d91]/80 via-[#2b2e7a]/50 to-transparent z-10"></div>
       
       {/* Content */}
-      <main className="relative z-20 flex flex-col min-h-screen p-6 text-center text-white">
-        {/* Logo removed as requested */}
-
-        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8 mb-6 md:mb-[25px] md:flex-grow md:justify-center">
-          {/* Mobile layout */}
-          <div className="flex flex-row md:hidden items-center gap-2 mb-6">
-            <ProofItem icon={<ShieldCheck size={18} />} text="Gluten-Free Guarantee" />
-            <ProofItem icon={<Award size={18} />} text="#1 Dietitian's Choice" />
-            <ProofItem icon={<Map size={18} />} text="Most Reliable Celiac Map" />
+      <main className="relative z-20 flex flex-col min-h-screen px-4 py-6 sm:p-6 text-center text-white">
+        {/* Trust Badges - Mobile & Desktop */}
+        <div className="w-full flex justify-center mb-8 sm:mb-6">
+          {/* Mobile layout - stacked vertically for better readability */}
+          <div className="grid grid-cols-1 gap-4 sm:hidden w-full max-w-xs">
+            <ProofItem icon={<ShieldCheck size={20} />} text="Gluten-Free Guarantee" />
+            <ProofItem icon={<Award size={20} />} text="#1 Dietitian's Choice" />
+            <ProofItem icon={<Map size={20} />} text="Most Reliable Celiac Map" />
           </div>
           
           {/* Desktop layout */}
-          <div className="hidden md:flex md:flex-row items-center gap-20 mb- md:mt-18">
+          <div className="hidden sm:flex sm:flex-row items-center gap-8 md:gap-20">
             <div className="flex flex-col items-center gap-2 text-center">
               <span className="text-base font-semibold">Gluten-Free Guarantee</span>
               <ShieldCheck size={18} />
@@ -80,33 +92,33 @@ export default function WelcomePage() {
           </div>
         </div>  
 
-        {/* Title - higher up on mobile, centered on desktop */}
-        <section className="flex-grow flex flex-col justify-center items-center">
-          <h2 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg leading-tight -mt-90 md:-mt-50 font-display">
-            Quickly find safe<br/>gluten-free places
+        {/* Title - optimized for mobile */}
+        <section className="flex-grow flex flex-col justify-center items-center px-2 sm:px-0">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-6 sm:mb-4 drop-shadow-lg leading-tight text-center max-w-4xl">
+            Quickly find safe<br className="sm:inline"/>gluten-free places
           </h2>
         </section>
 
-        {/* CSS Animated Testimonials */}
-        <div className="w-full flex justify-center">
-          <div className="flex flex-col md:flex-row gap-3 overflow-x-auto pb-1 px-1 md:overflow-visible md:pb-0 md:px-0 max-w-full md:max-w-3xl justify-center mx-auto">
+        {/* CSS Animated Testimonials - Mobile Optimized */}
+        <div className="w-full flex justify-center mb-8 sm:mb-6">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-3 w-full max-w-2xl sm:max-w-3xl justify-center px-2 sm:px-0">
             {testimonials.map((t, i) => (
               <div
                 key={t.name}
-                className={`bg-white/90 backdrop-blur-sm text-gray-800 rounded-xl p-2 w-7/8 mt-1 mx-auto md:w-full md:min-w-[206px] md:max-w-[300px] text-left shadow-lg flex-shrink-0 transition-all duration-700 ease-out
+                className={`bg-white/90 backdrop-blur-sm text-gray-800 rounded-xl p-4 sm:p-3 w-full sm:min-w-[280px] sm:max-w-[300px] text-left shadow-lg transition-all duration-700 ease-out
                   ${visible > i ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                 `}
                 style={{ transitionDelay: `${i * 120}ms` }}
               >
-                <p className="font-semibold mb-1 text-xs md:text-sm">&quot;{t.quote}&quot;</p>
-                <div className="flex items-center justify-between mt-1">
-                  <div className="flex items-center gap-1.5">
-                    <img src={t.avatar} alt={t.name} className="w-6 h-6 rounded-full border-2 border-white" />
+                <p className="font-semibold mb-2 text-sm sm:text-sm leading-relaxed">&quot;{t.quote}&quot;</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <img src={t.avatar} alt={t.name} className="w-8 h-8 sm:w-6 sm:h-6 rounded-full border-2 border-white" />
                     <span className="text-sm font-bold">{t.name}</span>
                   </div>
                   <div className="flex">
                     {[...Array(t.stars)].map((_, idx) => (
-                      <Star key={idx} size={12} className="text-yellow-500 fill-yellow-500" />
+                      <Star key={idx} size={14} className="text-yellow-500 fill-yellow-500" />
                     ))}
                   </div>
                 </div>
@@ -115,20 +127,23 @@ export default function WelcomePage() {
           </div>
         </div>
 
-        {/* CTA Button */}
-        <footer className="w-full flex flex-col items-center gap-4 mt-6">
-          <Link href="/quiz/1" className="w-full max-w-sm">
-            <button className="w-full bg-gradient-to-r from-[#ff7eb3] via-[#ff758c] to-[#ff7eb3] text-white font-bold py-4 rounded-xl text-lg shadow-xl hover:scale-105 transition-transform duration-200">
+        {/* CTA Button - Mobile Optimized */}
+        <footer className="w-full flex flex-col items-center gap-4 pb-6 sm:pb-0">
+          <Link href="/quiz/1" className="w-full max-w-sm px-4 sm:px-0">
+            <button 
+              onClick={handleContinueClick}
+              className="w-full bg-gradient-to-r from-[#ff7eb3] via-[#ff758c] to-[#ff7eb3] text-white font-bold py-4 sm:py-4 rounded-xl text-lg shadow-xl hover:scale-105 active:scale-95 transition-transform duration-200 min-h-[48px]"
+            >
               CONTINUE
             </button>
           </Link>
 
-          {/* People Joined Today Element */}
-          <div className="flex items-center gap-2 text-white/80 mt-2">
+          {/* People Joined Today Element - Mobile Optimized */}
+          <div className="flex items-center gap-2 text-white/80">
             <div className="flex -space-x-2">
-                <img src="https://i.pravatar.cc/40?u=a" alt="user 1" className="w-6 h-6 rounded-full border-2 border-white/50" />
-                <img src="https://i.pravatar.cc/40?u=b" alt="user 2" className="w-6 h-6 rounded-full border-2 border-white/50" />
-                <img src="https://i.pravatar.cc/40?u=c" alt="user 3" className="w-6 h-6 rounded-full border-2 border-white/50" />
+                <img src="https://i.pravatar.cc/40?u=a" alt="user 1" className="w-7 h-7 sm:w-6 sm:h-6 rounded-full border-2 border-white/50" />
+                <img src="https://i.pravatar.cc/40?u=b" alt="user 2" className="w-7 h-7 sm:w-6 sm:h-6 rounded-full border-2 border-white/50" />
+                <img src="https://i.pravatar.cc/40?u=c" alt="user 3" className="w-7 h-7 sm:w-6 sm:h-6 rounded-full border-2 border-white/50" />
             </div>
             <span className="text-sm font-semibold">341 joined today 🙌</span>
           </div>

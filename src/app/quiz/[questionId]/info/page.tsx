@@ -10,6 +10,7 @@ import {
 } from '@/lib/questions';
 import QuizHeader from '../components/QuizHeader';
 import InfoIllustration from './InfoIllustration';
+import InfoTracker from './InfoTracker';
 
 type Props = {
   params: Promise<{
@@ -105,6 +106,12 @@ export default async function InfoPage({ params }: Props) {
 
   return (
     <main className="flex flex-col items-center min-h-screen p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
+      {/* Track info page view */}
+      <InfoTracker 
+        questionId={questionIdNum} 
+        infoTitle={question.info.title} 
+      />
+      
       <QuizHeader />
       
       <InfoContent question={question} />
