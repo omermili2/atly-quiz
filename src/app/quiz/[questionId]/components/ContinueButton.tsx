@@ -1,5 +1,3 @@
-import React from 'react';
-
 type Props = {
   isVisible: boolean;
   onClick: () => void;

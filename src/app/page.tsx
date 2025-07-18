@@ -49,10 +49,6 @@ export default function WelcomePage() {
     analytics.trackLandingPageEngagement('continue_clicked');
   };
 
-  const handleLogoClick = () => {
-    analytics.trackLandingPageEngagement('logo_clicked');
-  };
-
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background Image */}

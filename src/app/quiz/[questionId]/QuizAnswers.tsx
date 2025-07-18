@@ -5,12 +5,10 @@ import { useRouter } from 'next/navigation';
 import { type QuizQuestion, getTotalQuestions } from '@/lib/questions';
 import AnswerCard from './AnswerCard';
 import MultipleChoiceCard from './MultipleChoiceCard';
-import analytics from '@/lib/analytics';
 
 type Props = {
   question: QuizQuestion;
   isMultipleChoice: boolean;
-  skipUrl: string;
 };
 
 const ROUTES = {
@@ -30,7 +28,7 @@ function saveAnswersToStorage(questionId: number, answers: string[]) {
   }
 }
 
-export default function QuizAnswers({ question, isMultipleChoice, skipUrl }: Props) {
+export default function QuizAnswers({ question, isMultipleChoice }: Props) {
   const router = useRouter();
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
 
@@ -72,7 +70,6 @@ export default function QuizAnswers({ question, isMultipleChoice, skipUrl }: Pro
               key={index}
               questionId={question.id}
               answer={answer}
-              nextPage={skipUrl}
             />
           )
         ))}

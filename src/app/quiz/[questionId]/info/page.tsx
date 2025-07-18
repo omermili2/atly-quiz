@@ -1,5 +1,4 @@
 // src/app/quiz/[questionId]/info/page.tsx
-import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { 

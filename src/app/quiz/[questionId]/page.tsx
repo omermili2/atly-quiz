@@ -128,7 +128,6 @@ export default async function QuestionPage({ params }: Props) {
         <QuizAnswers 
           question={question}
           isMultipleChoice={isMultipleChoice}
-          skipUrl={skipUrl}
         />
       </div>
     </main>

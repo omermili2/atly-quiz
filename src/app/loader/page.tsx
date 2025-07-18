@@ -13,18 +13,18 @@ const analysisSteps = [
   'Finalizing your results...'
 ];
 
+// Custom progress curve (not linear)
+const progressCurve = [
+  0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100
+];
+
+// Map which percent each step should appear at
+const stepPercents = [0, 10, 35, 60, 72, 85];
+
 export default function LoaderPage() {
   const [analysisStatus] = useState('analyzing');
   const [currentStep, setCurrentStep] = useState(0);
   const [percent, setPercent] = useState(0);
-
-  // Custom progress curve (not linear)
-  const progressCurve = [
-    0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100
-  ];
-
-  // Map which percent each step should appear at
-  const stepPercents = [0, 10, 35, 60, 72, 85];
 
   useEffect(() => {
     // Track analysis start
@@ -55,7 +55,7 @@ export default function LoaderPage() {
       clearInterval(percentTimer);
       clearTimeout(timeout);
     };
-  }, []);
+  }, []); // Empty dependency array is correct here
 
   // New effect: update currentStep based on percent and track progress
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function LoaderPage() {
     
     // Track analysis progress at key milestones
     analytics.trackAnalysisProgress(percent, analysisSteps[textStep]);
-  }, [percent]);
+  }, [percent]); // Only percent is needed as dependency
 
   // --- Conditional Rendering based on analysisStatus ---
   if (analysisStatus === 'analyzing') {

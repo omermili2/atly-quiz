@@ -1,5 +1,3 @@
-import React from 'react';
-
 const ATLY_LOGO = "/atly-logo.png";
 
 export default function QuizHeader() {

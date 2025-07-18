@@ -10,7 +10,6 @@ import analytics from '@/lib/analytics';
 type Props = {
   questionId: number;
   answer: string;
-  nextPage: string;
 };
 
 const SELECTION_DELAY = 400;
