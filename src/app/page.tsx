@@ -1,103 +1,139 @@
-import Image from "next/image";
+// src/app/page.tsx
+"use client";
+import Link from 'next/link';
+import { ShieldCheck, Award, Map, Star } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-export default function Home() {
+// A small component for the social proof banners at the top
+function ProofItem({ icon, text }: { icon: React.ReactNode, text: string }) {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-white/80">
+      <span className="font-bold text-xs tracking-wider uppercase !font-extrabold text-center md:text-left">{text}</span>
+      {icon}
+    </div>
+  );
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+const testimonials = [
+  {
+    quote: 'Atly made traveling so much easier. I found safe places everywhere I went!',
+    name: 'Maria S.',
+    avatar: 'https://i.pravatar.cc/40?img=47', // more feminine avatar
+    stars: 5,
+  },
+  {
+    quote: 'I love the community tips. I finally feel confident eating out again.',
+    name: 'Alex P.',
+    avatar: 'https://i.pravatar.cc/40?u=alex',
+    stars: 5,
+  },
+];
+
+export default function WelcomePage() {
+  // Track which testimonials are visible for staggered animation
+  const [visible, setVisible] = useState<number>(0);
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (visible < testimonials.length) {
+      timeout = setTimeout(() => setVisible(visible + 1), 250);
+    }
+    return () => clearTimeout(timeout);
+  }, [visible]);
+
+  return (
+    <div className="relative min-h-screen">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center z-0"
+        style={{ backgroundImage: "url(https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop)" }}
+      ></div>
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#5a2d91]/80 via-[#2b2e7a]/50 to-transparent z-10"></div>
+      
+      {/* Content */}
+      <main className="relative z-20 flex flex-col min-h-screen p-6 text-center text-white">
+        {/* Logo removed as requested */}
+
+        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8 mb-6 md:mb-[25px] md:flex-grow md:justify-center">
+          {/* Mobile layout */}
+          <div className="flex flex-row md:hidden items-center gap-2 mb-6">
+            <ProofItem icon={<ShieldCheck size={18} />} text="Gluten-Free Guarantee" />
+            <ProofItem icon={<Award size={18} />} text="#1 Dietitian's Choice" />
+            <ProofItem icon={<Map size={18} />} text="Most Reliable Celiac Map" />
+          </div>
+          
+          {/* Desktop layout */}
+          <div className="hidden md:flex md:flex-row items-center gap-20 mb- md:mt-18">
+            <div className="flex flex-col items-center gap-2 text-center">
+              <span className="text-base font-semibold">Gluten-Free Guarantee</span>
+              <ShieldCheck size={18} />
+            </div>
+            <div className="flex flex-col items-center gap-2 text-center">
+              <span className="text-base font-semibold">#1 Dietitian's Choice</span>
+              <Award size={18} />
+            </div>
+            <div className="flex flex-col items-center gap-2 text-center">
+              <span className="text-base font-semibold">Most Reliable Celiac Map</span>
+              <Map size={18} />
+            </div>
+          </div>
+        </div>  
+
+        {/* Title - higher up on mobile, centered on desktop */}
+        <section className="flex-grow flex flex-col justify-center items-center">
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg leading-tight -mt-90 md:-mt-50 font-display">
+            Quickly find safe<br/>gluten-free places
+          </h2>
+        </section>
+
+        {/* CSS Animated Testimonials */}
+        <div className="w-full flex justify-center">
+          <div className="flex flex-col md:flex-row gap-3 overflow-x-auto pb-1 px-1 md:overflow-visible md:pb-0 md:px-0 max-w-full md:max-w-3xl justify-center mx-auto">
+            {testimonials.map((t, i) => (
+              <div
+                key={t.name}
+                className={`bg-white/90 backdrop-blur-sm text-gray-800 rounded-xl p-2 w-7/8 mt-1 mx-auto md:w-full md:min-w-[206px] md:max-w-[300px] text-left shadow-lg flex-shrink-0 transition-all duration-700 ease-out
+                  ${visible > i ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+                `}
+                style={{ transitionDelay: `${i * 120}ms` }}
+              >
+                <p className="font-semibold mb-1 text-xs md:text-sm">&quot;{t.quote}&quot;</p>
+                <div className="flex items-center justify-between mt-1">
+                  <div className="flex items-center gap-1.5">
+                    <img src={t.avatar} alt={t.name} className="w-6 h-6 rounded-full border-2 border-white" />
+                    <span className="text-sm font-bold">{t.name}</span>
+                  </div>
+                  <div className="flex">
+                    {[...Array(t.stars)].map((_, idx) => (
+                      <Star key={idx} size={12} className="text-yellow-500 fill-yellow-500" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* CTA Button */}
+        <footer className="w-full flex flex-col items-center gap-4 mt-6">
+          <Link href="/quiz/1" className="w-full max-w-sm">
+            <button className="w-full bg-gradient-to-r from-[#ff7eb3] via-[#ff758c] to-[#ff7eb3] text-white font-bold py-4 rounded-xl text-lg shadow-xl hover:scale-105 transition-transform duration-200">
+              CONTINUE
+            </button>
+          </Link>
+
+          {/* People Joined Today Element */}
+          <div className="flex items-center gap-2 text-white/80 mt-2">
+            <div className="flex -space-x-2">
+                <img src="https://i.pravatar.cc/40?u=a" alt="user 1" className="w-6 h-6 rounded-full border-2 border-white/50" />
+                <img src="https://i.pravatar.cc/40?u=b" alt="user 2" className="w-6 h-6 rounded-full border-2 border-white/50" />
+                <img src="https://i.pravatar.cc/40?u=c" alt="user 3" className="w-6 h-6 rounded-full border-2 border-white/50" />
+            </div>
+            <span className="text-sm font-semibold">341 joined today 🙌</span>
+          </div>
+        </footer>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
