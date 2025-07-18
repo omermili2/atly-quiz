@@ -17,7 +17,6 @@ const analysisSteps = [
 ];
 
 export default function LoaderPage() {
-  const [answers, setAnswers] = useState<QuizAnswers | null>(null);
   const [analysisStatus] = useState('analyzing');
   const [currentStep, setCurrentStep] = useState(0);
   const [percent, setPercent] = useState(0);
@@ -31,16 +30,6 @@ export default function LoaderPage() {
   const stepPercents = [0, 10, 35, 60, 72, 85];
 
   useEffect(() => {
-    // 1. Load answers from localStorage once on mount
-    try {
-      const savedAnswers = JSON.parse(localStorage.getItem('quizAnswers') || '{}');
-      setAnswers(savedAnswers);
-    } catch (error) {
-      console.error('Could not load answers from localStorage', error);
-      setAnswers({});
-    }
-
-    // 2. Animate the analysis steps and percent
     const totalDuration = 10000; // 10 seconds
     const steps = progressCurve.length;
     const stepDuration = totalDuration / steps;

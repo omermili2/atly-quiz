@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ShieldCheck, Award, Map, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-// A small component for the social proof banners at the top
+
 function ProofItem({ icon, text }: { icon: React.ReactNode, text: string }) {
   return (
     <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-white/80">
@@ -18,7 +18,7 @@ const testimonials = [
   {
     quote: 'Atly made traveling so much easier. I found safe places everywhere I went!',
     name: 'Maria S.',
-    avatar: 'https://i.pravatar.cc/40?img=47', // more feminine avatar
+    avatar: 'https://i.pravatar.cc/40?img=47',
     stars: 5,
   },
   {
