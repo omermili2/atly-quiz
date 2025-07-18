@@ -8,7 +8,7 @@ import QuizAnswers from './QuizAnswers';
 
 // Constants
 const ROUTES = {
-  PRE_SUMMARY: '/pre-summary',
+  QUIZ_END: '/quiz-end',
   INFO: (id: number) => `/quiz/${id}/info`,
   QUESTION: (id: number) => `/quiz/${id}`,
 } as const;
@@ -52,7 +52,7 @@ export default async function QuestionPage({ params }: Props) {
     
     const nextId = questionIdNum + 1;
     return nextId > totalQuestions 
-      ? ROUTES.PRE_SUMMARY 
+      ? ROUTES.QUIZ_END 
       : ROUTES.QUESTION(nextId);
   };
 

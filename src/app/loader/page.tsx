@@ -16,7 +16,7 @@ const analysisSteps = [
   'Finalizing your results...'
 ];
 
-export default function SummaryPage() {
+export default function LoaderPage() {
   const [answers, setAnswers] = useState<QuizAnswers | null>(null);
   const [analysisStatus] = useState('analyzing');
   const [currentStep, setCurrentStep] = useState(0);
@@ -58,7 +58,7 @@ export default function SummaryPage() {
 
     // 3. Move from "analyzing" to "finished" after totalDuration
     const timeout = setTimeout(() => {
-      // Skip summary results and go directly to pricing
+      // Skip loader results and go directly to pricing
       window.location.href = '/pricing';
     }, totalDuration + 300);
 
@@ -78,32 +78,6 @@ export default function SummaryPage() {
     }
     setCurrentStep(textStep);
   }, [percent]);
-
-  // --- Personalization Logic (no changes needed here) ---
-  let summaryTitle = 'Thank you for your answers!';
-  let summaryText = "Based on your responses, we've crafted a personalized starting point for your gluten-free journey with Atly.";
-
-  if (answers) {
-    // Helper function to get answer text (handles both single choice strings and multiple choice arrays)
-    const getAnswerText = (answer: string | string[]) => {
-      if (Array.isArray(answer)) {
-        return answer.join(', ');
-      }
-      return answer || '';
-    };
-
-    const mainReason = getAnswerText(answers[1]);
-    const mainChallenge = getAnswerText(answers[2]);
-
-    if (mainReason.includes('Celiac')) {
-      summaryTitle = 'Your Safety is Our Priority.';
-      summaryText = "As someone with Celiac disease, you need confidence in your food choices. We'll prioritize showing you certified gluten-free products and restaurants with safe handling protocols.";
-    }
-
-    if (mainChallenge.includes('eating out')) {
-      summaryText += " We noticed your biggest challenge is dining out, so we'll highlight Atly's restaurant finder and user reviews to help you eat out safely and deliciously.";
-    }
-  }
 
   // --- Conditional Rendering based on analysisStatus ---
   if (analysisStatus === 'analyzing') {
@@ -161,6 +135,6 @@ export default function SummaryPage() {
     );
   }
 
-  // Remove the summary results section entirely since we're redirecting to pricing
+  // Remove the loader results section entirely since we're redirecting to pricing
   return null; // This won't be reached since we redirect
-}
+} 

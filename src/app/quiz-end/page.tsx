@@ -12,7 +12,7 @@ const emojiGrid = [
   '🍕', '🍗', '🌭',
 ];
 
-export default function PreSummaryPage() {
+export default function QuizEndPage() {
   const router = useRouter();
 
   // Optionally, focus the continue button on mount for accessibility
@@ -50,7 +50,7 @@ export default function PreSummaryPage() {
         <button
           id="continue-btn"
           className="w-full max-w-md bg-gradient-to-r from-[#ff7eb3] via-[#ff758c] to-[#ff7eb3] text-white font-bold py-4 rounded-full text-xl shadow-xl hover:scale-105 transition-transform duration-200 mb-2"
-          onClick={() => router.push('/summary')}
+          onClick={() => router.push('/loader')}
         >
           Continue
         </button>

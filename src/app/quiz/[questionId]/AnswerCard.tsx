@@ -14,7 +14,7 @@ type Props = {
 
 const SELECTION_DELAY = 400;
 const ROUTES = {
-  PRE_SUMMARY: '/pre-summary',
+  QUIZ_END: '/quiz-end',
   INFO: (id: number) => `/quiz/${id}/info`,
   QUESTION: (id: number) => `/quiz/${id}`,
 } as const;
@@ -40,11 +40,11 @@ function getNextRoute(questionId: number): string {
     return ROUTES.INFO(questionId);
   }
   
-  // Otherwise go to next question or summary
+  // Otherwise go to next question or loader
   const nextId = questionId + 1;
   return nextId <= totalQuestions 
     ? ROUTES.QUESTION(nextId) 
-    : ROUTES.PRE_SUMMARY;
+    : ROUTES.QUIZ_END;
 }
 
 export default function AnswerCard({ questionId, answer }: Props) {

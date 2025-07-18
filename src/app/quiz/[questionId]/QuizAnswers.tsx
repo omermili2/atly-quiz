@@ -13,7 +13,7 @@ type Props = {
 };
 
 const ROUTES = {
-  PRE_SUMMARY: '/pre-summary',
+    QUIZ_END: '/quiz-end',
   INFO: (id: number) => `/quiz/${id}/info`,
   QUESTION: (id: number) => `/quiz/${id}`,
 } as const;
@@ -49,7 +49,7 @@ export default function QuizAnswers({ question, isMultipleChoice, skipUrl }: Pro
       const nextId = question.id + 1;
       const totalQuestions = getTotalQuestions();
       const destination = nextId > totalQuestions 
-        ? ROUTES.PRE_SUMMARY 
+        ? ROUTES.QUIZ_END 
         : ROUTES.QUESTION(nextId);
       router.push(destination);
     }

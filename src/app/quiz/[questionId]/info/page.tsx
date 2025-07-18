@@ -39,7 +39,7 @@ function getNextPageUrl(questionId: number): string {
   
   return nextId <= totalQuestions 
     ? `/quiz/${nextId}` 
-    : '/pre-summary';
+    : '/quiz-end';
 }
 
 // Reusable components
