@@ -3,10 +3,6 @@ import { useEffect, useState } from 'react';
 
 const ATLY_LOGO = "/atly-logo.png";
 
-type QuizAnswers = {
-  [key: number]: string | string[];
-};
-
 const analysisSteps = [
   'Analyzing your responses...',
   'Identifying key challenges...',
@@ -71,7 +67,7 @@ export default function LoaderPage() {
   // --- Conditional Rendering based on analysisStatus ---
   if (analysisStatus === 'analyzing') {
     return (
-      <main className="flex flex-col items-center justify-center min-h-screen text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] p-4">
+      <main className="flex flex-col items-center justify-start min-h-screen text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] p-4 pt-[18vh]">
         <header className="w-full flex items-center mb-4 justify-center">
           <a href="https://www.atly.com/" target="_blank" rel="noopener noreferrer">
             <img src={ATLY_LOGO} alt="Atly logo" className="h-20 w-auto drop-shadow-2xl rounded-2xl backdrop-blur-lg cursor-pointer hover:scale-105 transition-transform duration-200" style={{ background: 'none' }} />
@@ -113,9 +109,6 @@ export default function LoaderPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg mb-4">
             Analyzing Your Results
           </h1>
-          <p className="text-lg text-white/80 mb-2">
-            Calculating preferences...
-          </p>
           <h2 className="text-xl text-white drop-shadow-lg mt-6 min-h-[2.5rem]">
             {analysisSteps[currentStep]}
           </h2>
