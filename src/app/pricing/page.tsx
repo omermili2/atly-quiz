@@ -1,19 +1,12 @@
 // src/app/pricing/page.tsx
 'use client';
-import { Check, Clock, CreditCard } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Check, CreditCard } from 'lucide-react';
+import { useState } from 'react';
 
 const ATLY_LOGO = "/atly-logo.png";
 
 export default function PricingPage() {
   const [selectedPlan, setSelectedPlan] = useState('annual');
-
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 py-8 bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
@@ -30,7 +23,7 @@ export default function PricingPage() {
             <div className="text-xs">GUARANTEE</div>
           </div>
           <div className="text-center text-white/90">
-            <div className="text-xs font-semibold mb-1">🏆 #1 DIETITIAN'S</div>
+            <div className="text-xs font-semibold mb-1">🏆 #1 DIETITIAN&apos;S</div>
             <div className="text-xs">CHOICE</div>
           </div>
           <div className="text-center text-white/90">
@@ -181,7 +174,7 @@ export default function PricingPage() {
         </button>
 
         <p className="text-center text-white/60 text-xs">
-          You won't be charged till {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { 
+          You won&apos;t be charged till {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { 
             month: 'long', 
             day: 'numeric', 
             year: 'numeric' 

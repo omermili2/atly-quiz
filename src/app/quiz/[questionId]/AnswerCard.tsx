@@ -47,7 +47,7 @@ function getNextRoute(questionId: number): string {
     : ROUTES.PRE_SUMMARY;
 }
 
-export default function AnswerCard({ questionId, answer, nextPage }: Props) {
+export default function AnswerCard({ questionId, answer }: Props) {
   const router = useRouter();
   const [isSelected, setIsSelected] = useState(false);
 

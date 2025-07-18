@@ -70,7 +70,7 @@ export default function WelcomePage() {
               <ShieldCheck size={18} />
             </div>
             <div className="flex flex-col items-center gap-2 text-center">
-              <span className="text-base font-semibold">#1 Dietitian's Choice</span>
+              <span className="text-base font-semibold">#1 Dietitian&apos;s Choice</span>
               <Award size={18} />
             </div>
             <div className="flex flex-col items-center gap-2 text-center">

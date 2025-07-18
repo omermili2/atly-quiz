@@ -1,4 +1,3 @@
-// src/app/quiz/[questionId]/MultipleChoiceCard.tsx
 'use client';
 
 import { useState } from 'react';
@@ -10,7 +9,7 @@ type Props = {
   onSelectionChange: (answer: string, isSelected: boolean) => void;
 };
 
-export default function MultipleChoiceCard({ questionId, answer, onSelectionChange }: Props) {
+export default function MultipleChoiceCard({ answer, onSelectionChange }: Props) {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleSelect = () => {

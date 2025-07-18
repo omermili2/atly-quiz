@@ -1,7 +1,4 @@
-// src/app/summary/page.tsx
 'use client';
-
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const ATLY_LOGO = "/atly-logo.png";
@@ -10,7 +7,6 @@ type QuizAnswers = {
   [key: number]: string | string[];
 };
 
-// Define the steps for our analysis animation
 const analysisSteps = [
   'Analyzing your responses...',
   'Identifying key challenges...',
@@ -22,7 +18,7 @@ const analysisSteps = [
 
 export default function SummaryPage() {
   const [answers, setAnswers] = useState<QuizAnswers | null>(null);
-  const [analysisStatus, setAnalysisStatus] = useState('analyzing');
+  const [analysisStatus] = useState('analyzing');
   const [currentStep, setCurrentStep] = useState(0);
   const [percent, setPercent] = useState(0);
 

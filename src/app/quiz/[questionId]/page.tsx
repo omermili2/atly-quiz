@@ -1,11 +1,8 @@
-// src/app/quiz/[questionId]/page.tsx
-
 import { notFound } from 'next/navigation';
 import { 
   getQuestionById, 
   getTotalQuestions, 
   isMultipleChoiceQuestion,
-  type QuizQuestion 
 } from '@/lib/questions';
 import QuizAnswers from './QuizAnswers';
 
