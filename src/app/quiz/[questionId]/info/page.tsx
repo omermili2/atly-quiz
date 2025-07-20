@@ -191,7 +191,7 @@ export default function InfoPage() {
   }
 
   return (
-    <main className="flex flex-col items-center h-screen p-4 md:p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] overflow-hidden">
+    <main className="flex flex-col items-center h-[100vh] p-4 md:p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] overflow-hidden">
       <InfoTracker 
         questionId={questionIdNum} 
         infoTitle={question.info.title} 
