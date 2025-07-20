@@ -3,8 +3,8 @@ import Logo from '@/components/ui/Logo';
 
 export default function QuizHeader() {
   return (
-    <div className="w-full flex justify-center items-start pt-0 -mt-8 mb-8">
-      <Logo size="xl" />
+    <div className="w-full flex justify-center items-start pt-0 -mt-4 mb-1">
+      <Logo size="lg" />
     </div>
   );
 } 

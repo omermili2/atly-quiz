@@ -8,9 +8,9 @@ interface HeaderProps {
 }
 
 const spacingClasses = {
-  sm: 'mb-2 md:mb-4',
-  md: 'mb-3 md:mb-6', 
-  lg: 'mb-4 md:mb-8',
+  sm: 'mb-0.5 md:mb-1',
+  md: 'mb-1 md:mb-2', 
+  lg: 'mb-1.5 md:mb-3',
 };
 
 export default function Header({ 
