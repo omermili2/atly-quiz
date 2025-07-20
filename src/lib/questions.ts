@@ -105,10 +105,6 @@ export const getQuestionById = (id: number): QuizQuestion | undefined => {
   return quizQuestions.find(question => question.id === id);
 };
 
-export const getQuestionsWithInfo = (): QuizQuestion[] => {
-  return quizQuestions.filter(question => question.info);
-};
-
 export const getTotalQuestions = (): number => {
   return quizQuestions.length;
 };
