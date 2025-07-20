@@ -66,7 +66,7 @@ export default function AnswerCard({ questionId, answer, disabled = false, onSel
       className={disabled && !isSelected ? 'pointer-events-none' : ''}
     >
       <div className="flex items-center justify-between">
-        <p className={`text-sm md:text-lg font-semibold leading-snug break-words hyphens-auto pr-2 flex-1 text-left ${
+        <p className={`text-sm md:text-lg font-semibold leading-snug break-words hyphens-none pr-2 flex-1 text-left ${
           isSelected ? 'text-white' : 'text-[#2b2e7a]'
         }`}>
           {answer}
