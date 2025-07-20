@@ -1,8 +1,10 @@
-// src/app/page.tsx
 "use client";
 import Link from 'next/link';
 import { ShieldCheck, Award, Map, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { TESTIMONIAL_ANIMATION_DELAY, TESTIMONIAL_STAGGER_DELAY } from '@/lib/constants';
+import Button from '@/components/ui/Button';
+import type { Testimonial, LandingPageAction } from '@/lib/types';
 import analytics from '@/lib/analytics';
 
 
@@ -15,7 +17,7 @@ function ProofItem({ icon, text }: { icon: React.ReactNode, text: string }) {
   );
 }
 
-const testimonials = [
+const testimonials: Testimonial[] = [
   {
     quote: 'Atly made traveling so much easier. I found safe places everywhere I went!',
     name: 'Maria S.',
@@ -31,42 +33,33 @@ const testimonials = [
 ];
 
 export default function WelcomePage() {
-  // Track which testimonials are visible for staggered animation
   const [visible, setVisible] = useState<number>(0);
   
   useEffect(() => {
-    // Track landing page load
     analytics.trackLandingPageLoad();
     
     let timeout: NodeJS.Timeout;
     if (visible < testimonials.length) {
-      timeout = setTimeout(() => setVisible(visible + 1), 250);
+      timeout = setTimeout(() => setVisible(visible + 1), TESTIMONIAL_ANIMATION_DELAY);
     }
     return () => clearTimeout(timeout);
   }, [visible]);
 
-  const handleContinueClick = () => {
-    analytics.trackLandingPageEngagement('continue_clicked');
-  };
-
-  const handleLogoClick = () => {
-    analytics.trackLandingPageEngagement('logo_clicked');
+  const handleContinueClick = (): void => {
+    const action: LandingPageAction = 'continue_clicked';
+    analytics.trackLandingPageEngagement(action);
   };
 
   return (
     <div className="relative min-h-screen">
-      {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ backgroundImage: "url(https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop)" }}
       ></div>
 
-      {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#5a2d91]/80 via-[#2b2e7a]/50 to-transparent z-10"></div>
       
-      {/* Content */}
       <main className="relative z-20 flex flex-col min-h-screen p-6 text-center text-white">
-        {/* Logo removed as requested */}
 
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8 mb-6 md:mb-[25px] md:flex-grow md:justify-center">
           {/* Mobile layout */}
@@ -93,14 +86,12 @@ export default function WelcomePage() {
           </div>
         </div>  
 
-        {/* Title - higher up on mobile, centered on desktop */}
         <section className="flex-grow flex flex-col justify-center items-center">
           <h2 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg leading-tight -mt-90 md:-mt-50 font-display">
             Quickly find safe<br/>gluten-free places
           </h2>
         </section>
 
-        {/* CSS Animated Testimonials */}
         <div className="w-full flex justify-center">
           <div className="flex flex-col md:flex-row gap-3 overflow-x-auto pb-1 px-1 md:overflow-visible md:pb-0 md:px-0 max-w-full md:max-w-3xl justify-center mx-auto">
             {testimonials.map((t, i) => (
@@ -109,7 +100,7 @@ export default function WelcomePage() {
                 className={`bg-white/90 backdrop-blur-sm text-gray-800 rounded-xl p-2 w-7/8 mt-1 mx-auto md:w-full md:min-w-[206px] md:max-w-[300px] text-left shadow-lg flex-shrink-0 transition-all duration-700 ease-out
                   ${visible > i ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                 `}
-                style={{ transitionDelay: `${i * 120}ms` }}
+                style={{ transitionDelay: `${i * TESTIMONIAL_STAGGER_DELAY}ms` }}
               >
                 <p className="font-semibold mb-1 text-xs md:text-sm">&quot;{t.quote}&quot;</p>
                 <div className="flex items-center justify-between mt-1">
@@ -128,18 +119,16 @@ export default function WelcomePage() {
           </div>
         </div>
 
-        {/* CTA Button */}
         <footer className="w-full flex flex-col items-center gap-4 mt-6">
           <Link href="/quiz/1" className="w-full max-w-sm">
-            <button 
+            <Button 
               onClick={handleContinueClick}
-              className="w-full bg-gradient-to-r from-[#ff7eb3] via-[#ff758c] to-[#ff7eb3] text-white font-bold py-4 rounded-xl text-lg shadow-xl hover:scale-105 transition-transform duration-200"
+              fullWidth
             >
               CONTINUE
-            </button>
+            </Button>
           </Link>
 
-          {/* People Joined Today Element */}
           <div className="flex items-center gap-2 text-white/80 mt-2">
             <div className="flex -space-x-2">
                 <img src="https://i.pravatar.cc/40?u=a" alt="user 1" className="w-6 h-6 rounded-full border-2 border-white/50" />

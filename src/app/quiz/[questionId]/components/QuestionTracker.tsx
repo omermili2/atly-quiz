@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import analytics from '@/lib/analytics';
 
 interface Props {
@@ -10,16 +10,14 @@ interface Props {
   isFirstQuestion?: boolean;
 }
 
-export default function QuestionTracker({ questionId, questionText, questionType, isFirstQuestion }: Props) {
+export default function QuestionTracker({ questionId, questionText, questionType, isFirstQuestion }: Props): React.JSX.Element | null {
   useEffect(() => {
-    // Track question view
     analytics.trackQuestionViewed(questionId, questionText, questionType);
     
-    // Track quiz start if this is the first question
     if (isFirstQuestion) {
       analytics.trackQuizStarted();
     }
   }, [questionId, questionText, questionType, isFirstQuestion]);
 
-  return null; // This component doesn't render anything
+  return null;
 } 

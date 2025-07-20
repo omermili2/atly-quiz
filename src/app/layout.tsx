@@ -1,4 +1,3 @@
-// src/app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -25,7 +24,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* Apply the new gradient background globally */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]`}
       >

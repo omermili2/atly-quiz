@@ -1,18 +1,24 @@
 import React from 'react';
 
-type Props = {
-  progress: number;
-  previousPageUrl: string | null;
-  skipUrl: string;
-};
+interface ProgressBarProps {
+  progress: number; // 0-100
+  backUrl?: string | null;
+  skipUrl?: string;
+  className?: string;
+}
 
-export default function QuizProgress({ progress, previousPageUrl, skipUrl }: Props) {
+export default function ProgressBar({ 
+  progress, 
+  backUrl, 
+  skipUrl, 
+  className = '' 
+}: ProgressBarProps) {
   return (
-    <div className="flex items-center justify-between mb-8 w-full">
+    <div className={`flex items-center justify-between mb-8 w-full ${className}`}>
       <div className="flex-shrink-0 w-16">
-        {previousPageUrl ? (
+        {backUrl ? (
           <a 
-            href={previousPageUrl} 
+            href={backUrl} 
             className="text-gray-300 text-base hover:text-gray-200 transition-colors duration-150 flex items-center"
           >
             Back
@@ -32,12 +38,14 @@ export default function QuizProgress({ progress, previousPageUrl, skipUrl }: Pro
       </div>
       
       <div className="flex-shrink-0 w-16 text-right">
-        <a 
-          href={skipUrl} 
-          className="text-gray-300 text-base hover:text-gray-200 transition-colors duration-150"
-        >
-          Skip
-        </a>
+        {skipUrl && (
+          <a 
+            href={skipUrl} 
+            className="text-gray-300 text-base hover:text-gray-200 transition-colors duration-150"
+          >
+            Skip
+          </a>
+        )}
       </div>
     </div>
   );

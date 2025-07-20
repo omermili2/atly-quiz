@@ -1,16 +1,14 @@
-// src/app/pricing/page.tsx
 'use client';
 import { Check, CreditCard } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Logo from '@/components/ui/Logo';
+import Button from '@/components/ui/Button';
 import analytics from '@/lib/analytics';
-
-const ATLY_LOGO = "/atly-logo.png";
 
 export default function PricingPage() {
   const [selectedPlan, setSelectedPlan] = useState('annual');
 
   useEffect(() => {
-    // Track pricing page view
     analytics.trackPricingPageViewed();
   }, []);
 
@@ -28,12 +26,9 @@ export default function PricingPage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 py-8 bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
       <header className="w-full flex items-center justify-center">
-        <a href="https://www.atly.com/" target="_blank" rel="noopener noreferrer">
-          <img src={ATLY_LOGO} alt="Atly logo" className="h-16 w-auto drop-shadow-2xl rounded-2xl backdrop-blur-lg cursor-pointer hover:scale-105 transition-transform duration-200" style={{ background: 'none' }} />
-        </a>
+        <Logo size="md" />
       </header>
 
-        {/* Trust Badges */}
         <div className="flex justify-center gap-12 mb-10">
           <div className="text-center text-white/90">
             <div className="text-xs font-semibold mb-1">🛡️ GLUTENED-FREE</div>
@@ -50,14 +45,11 @@ export default function PricingPage() {
         </div>
       
       <div className="w-full max-w-md mx-auto">
-        {/* Header Section */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-4">Start your 7-day free trial</h1>
         </div>
 
-        {/* Pricing Cards */}
         <div className="space-y-4 mb-8">
-          {/* Annual Plan */}
           <div 
             className={`relative bg-white rounded-2xl p-6 cursor-pointer transition-all duration-200 ${
               selectedPlan === 'annual' ? 'ring-2 ring-[#ff7eb3]' : ''
@@ -93,7 +85,6 @@ export default function PricingPage() {
             </div>
           </div>
 
-          {/* Monthly Plan */}
           <div 
             className={`bg-white rounded-2xl p-6 cursor-pointer transition-all duration-200 ${
               selectedPlan === 'monthly' ? 'ring-2 ring-[#ff7eb3]' : ''
@@ -120,19 +111,16 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* Payment Form */}
           <div className="flex items-center justify-center text-white mb-4">
             <span className="text-sm">🔒 Secure payment</span>
           </div>
           
-          {/* Card Form */}
           <div className="bg-white rounded-2xl p-6 mb-8">
             <div className="flex items-center mb-4">
               <CreditCard size={20} className="text-blue-600 mr-3" />
               <span className="text-lg font-semibold text-gray-800">Card</span>
             </div>
             
-            {/* Card Number */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Card number</label>
               <div className="relative">
@@ -149,7 +137,6 @@ export default function PricingPage() {
               </div>
             </div>
             
-            {/* Expiration and CVC */}
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Expiration date</label>
@@ -174,7 +161,6 @@ export default function PricingPage() {
               </div>
             </div>
             
-            {/* Terms */}
             <p className="text-sm text-gray-500 leading-relaxed">
               By providing your card information, you allow Atly to charge your card for future payments in accordance with their terms.
             </p>
@@ -185,13 +171,15 @@ export default function PricingPage() {
             <p className="text-white/80 text-sm">No commitment. Cancel anytime.</p>
           </div>
 
-        {/* CTA Button */}
-        <button 
+        <Button 
+          variant="rounded"
+          size="lg"
+          fullWidth
           onClick={handleCheckoutStart}
-          className="w-full bg-gradient-to-r from-[#ff7eb3] via-[#ff758c] to-[#ff7eb3] text-white font-bold py-4 rounded-full text-xl shadow-xl hover:scale-105 transition-transform duration-200 mb-4"
+          className="mb-4"
         >
           START MY FREE TRIAL
-        </button>
+        </Button>
 
         <p className="text-center text-white/60 text-xs">
           You won&apos;t be charged till {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { 

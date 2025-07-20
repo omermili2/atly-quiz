@@ -29,7 +29,6 @@ body {
 @tailwind components;
 @tailwind utilities;
 
-/* Add these new styles */
 @keyframes fadeIn {
   from {
     opacity: 0;

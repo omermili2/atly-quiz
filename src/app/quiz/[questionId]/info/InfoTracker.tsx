@@ -13,5 +13,5 @@ export default function InfoTracker({ questionId, infoTitle }: Props) {
     analytics.trackInfoPageViewed(questionId, infoTitle);
   }, [questionId, infoTitle]);
 
-  return null; // This component doesn't render anything
+  return null;
 } 

@@ -1,8 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import analytics from '@/lib/analytics';
-
-const ATLY_LOGO = "/atly-logo.png";
+import Logo from '@/components/ui/Logo';
 
 const analysisSteps = [
   'Analyzing your responses...',
@@ -18,19 +16,12 @@ export default function LoaderPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [percent, setPercent] = useState(0);
 
-  // Custom progress curve (not linear)
-  const progressCurve = [
-    0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100
-  ];
-
-  // Map which percent each step should appear at
+  const progressCurve = [0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100];
   const stepPercents = [0, 10, 35, 60, 72, 85];
 
   useEffect(() => {
-    // Track analysis start
-    analytics.trackAnalysisStarted();
     
-    const totalDuration = 10000; // 10 seconds
+    const totalDuration = 10000;
     const steps = progressCurve.length;
     const stepDuration = totalDuration / steps;
     let stepValue = 0;
@@ -45,9 +36,7 @@ export default function LoaderPage() {
       }
     }, stepDuration);
 
-    // 3. Move from "analyzing" to "finished" after totalDuration
     const timeout = setTimeout(() => {
-      // Skip loader results and go directly to pricing
       window.location.href = '/pricing';
     }, totalDuration + 300);
 
@@ -57,7 +46,6 @@ export default function LoaderPage() {
     };
   }, []);
 
-  // New effect: update currentStep based on percent and track progress
   useEffect(() => {
     let textStep = 0;
     for (let i = 0; i < stepPercents.length; i++) {
@@ -66,22 +54,15 @@ export default function LoaderPage() {
       }
     }
     setCurrentStep(textStep);
-    
-    // Track analysis progress at key milestones
-    analytics.trackAnalysisProgress(percent, analysisSteps[textStep]);
   }, [percent]);
 
-  // --- Conditional Rendering based on analysisStatus ---
   if (analysisStatus === 'analyzing') {
     return (
       <main className="flex flex-col items-center justify-start min-h-screen text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] p-4 pt-[18vh]">
         <header className="w-full flex items-center mb-4 justify-center">
-          <a href="https://www.atly.com/" target="_blank" rel="noopener noreferrer">
-            <img src={ATLY_LOGO} alt="Atly logo" className="h-20 w-auto drop-shadow-2xl rounded-2xl backdrop-blur-lg cursor-pointer hover:scale-105 transition-transform duration-200" style={{ background: 'none' }} />
-          </a>
+          <Logo size="lg" />
         </header>
         <div className="flex flex-col items-center justify-center w-full max-w-md animate-fade-in">
-          {/* Circular Progress Loader - new style */}
           <div className="relative flex items-center justify-center mb-8" style={{ width: 220, height: 220 }}>
             <svg className="absolute top-0 left-0" width="220" height="220" style={{ transform: 'rotate(-90deg)' }}>
               <circle
@@ -123,7 +104,4 @@ export default function LoaderPage() {
       </main>
     );
   }
-
-  // Remove the loader results section entirely since we're redirecting to pricing
-  return null; // This won't be reached since we redirect
 } 

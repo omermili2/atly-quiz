@@ -1,4 +1,3 @@
-// src/app/quiz/[questionId]/info/page.tsx
 import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -8,17 +7,16 @@ import {
   getTotalQuestions,
   type QuizQuestion 
 } from '@/lib/questions';
-import QuizHeader from '../components/QuizHeader';
+import type { QuestionPageParams } from '@/lib/types';
+import Button from '@/components/ui/Button';
 import InfoIllustration from './InfoIllustration';
+import QuizHeader from '../components/QuizHeader';
 import InfoTracker from './InfoTracker';
 
 type Props = {
-  params: Promise<{
-    questionId: string;
-  }>;
+  params: Promise<QuestionPageParams>;
 };
 
-// Utility functions
 function formatTextIntoLines(text: string): React.ReactElement {
   const words = text.split(' ');
   const midpoint = Math.ceil(words.length / 2);
@@ -43,7 +41,6 @@ function getNextPageUrl(questionId: number): string {
     : '/quiz-end';
 }
 
-// Reusable components
 function InfoContent({ question }: { question: QuizQuestion }) {
   if (!question.info) return null;
   
@@ -69,9 +66,9 @@ function InfoNavigation({ questionId }: { questionId: number }) {
   return (
     <>
       <Link href={nextPageUrl} className="w-full max-w-xs">
-        <button className="w-full bg-gradient-to-r from-[#ff7eb3] via-[#ff758c] to-[#ff7eb3] text-white font-bold py-4 rounded-xl text-lg shadow-xl hover:scale-105 transition-transform duration-200">
+        <Button fullWidth>
           Continue
-        </button>
+        </Button>
       </Link>
       
       <div className="mt-4">
@@ -86,27 +83,23 @@ function InfoNavigation({ questionId }: { questionId: number }) {
   );
 }
 
-// Static generation
 export function generateStaticParams() {
   return getQuestionsWithInfo().map(q => ({ 
     questionId: q.id.toString() 
   }));
 }
 
-// Main component
 export default async function InfoPage({ params }: Props) {
   const { questionId } = await params;
   const questionIdNum = parseInt(questionId, 10);
   const question = getQuestionById(questionIdNum);
   
-  // Validation
   if (!question?.info) {
     return notFound();
   }
 
   return (
     <main className="flex flex-col items-center min-h-screen p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
-      {/* Track info page view */}
       <InfoTracker 
         questionId={questionIdNum} 
         infoTitle={question.info.title} 

@@ -1,4 +1,18 @@
 import mixpanel from 'mixpanel-browser';
+import { getTotalQuestions } from './questions';
+import { getQuizAnswers as getStoredQuizAnswers, getAnalyticsUserId, getFirstVisit } from './storage';
+import type { 
+  QuizAnswers, 
+  UserProperties, 
+  UserSegment, 
+  PrimaryMotivation, 
+  AnalyticsEventType,
+  PlanType,
+  LandingPageAction,
+  QuizAnswer,
+  QuestionEventProperties,
+  AnalyticsProperties
+} from './types';
 
 const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || 'YOUR_MIXPANEL_TOKEN';
 
@@ -8,28 +22,6 @@ if (typeof window !== 'undefined') {
     track_pageview: true,
     persistence: 'localStorage',
   });
-}
-
-// Types for better TypeScript support
-export interface QuizAnswers {
-  [questionId: number]: string | string[];
-}
-
-export interface UserProperties {
-  first_visit?: string;
-  last_active?: string;
-  quiz_started?: boolean;
-  quiz_completed?: boolean;
-  quiz_completion_date?: string;
-  total_questions_answered?: number;
-  questions_skipped?: number;
-  time_to_complete_quiz?: number;
-  reached_pricing?: boolean;
-  user_agent?: string;
-  referrer?: string;
-  utm_source?: string;
-  utm_medium?: string;
-  utm_campaign?: string;
 }
 
 class AnalyticsService {
@@ -46,11 +38,7 @@ class AnalyticsService {
   }
 
   private getQuizAnswers(): QuizAnswers {
-    try {
-      return JSON.parse(localStorage.getItem('quizAnswers') || '{}');
-    } catch {
-      return {};
-    }
+    return getStoredQuizAnswers();
   }
 
   private getTimeSpent(): number {
@@ -61,16 +49,21 @@ class AnalyticsService {
     return this.questionStartTime ? Date.now() - this.questionStartTime : 0;
   }
 
-  // Initialize user tracking
+  private track(event: AnalyticsEventType, properties?: AnalyticsProperties): void {
+    if (typeof window === 'undefined') return;
+    mixpanel.track(event, properties);
+  }
+
   identifyUser(): void {
     if (typeof window === 'undefined') return;
 
-    const userId = this.getUserId();
+    const userId = getAnalyticsUserId();
     const now = new Date().toISOString();
+    const firstVisit = getFirstVisit();
     
     // Set user properties
     const properties: UserProperties = {
-      first_visit: localStorage.getItem('first_visit') || now,
+      first_visit: firstVisit,
       last_active: now,
       user_agent: navigator.userAgent,
       referrer: document.referrer || 'direct',
@@ -79,29 +72,14 @@ class AnalyticsService {
       utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || undefined,
     };
 
-    // Store first visit if not exists
-    if (!localStorage.getItem('first_visit')) {
-      localStorage.setItem('first_visit', now);
-    }
-
     mixpanel.identify(userId);
     mixpanel.people.set(properties);
   }
 
-  private getUserId(): string {
-    let userId = localStorage.getItem('analytics_user_id');
-    if (!userId) {
-      userId = 'user_' + Date.now().toString(36) + Math.random().toString(36).substr(2);
-      localStorage.setItem('analytics_user_id', userId);
-    }
-    return userId;
-  }
-
-  // Page tracking
-  trackPageView(page: string, properties?: Record<string, any>): void {
+  trackPageView(page: string, properties?: Record<string, string | number | boolean>): void {
     if (typeof window === 'undefined') return;
 
-    mixpanel.track('Page Viewed', {
+    this.track('Page Viewed', {
       page,
       url: window.location.href,
       path: window.location.pathname,
@@ -111,7 +89,6 @@ class AnalyticsService {
     });
   }
 
-  // Landing page events
   trackLandingPageLoad(): void {
     this.identifyUser();
     this.startTime = Date.now();
@@ -120,14 +97,14 @@ class AnalyticsService {
       event_type: 'funnel_start',
     });
 
-    mixpanel.track('Landing Page Loaded', {
+    this.track('Landing Page Loaded', {
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
   }
 
-  trackLandingPageEngagement(action: 'testimonial_viewed' | 'continue_clicked' | 'logo_clicked'): void {
-    mixpanel.track('Landing Page Interaction', {
+  trackLandingPageEngagement(action: LandingPageAction): void {
+    this.track('Landing Page Interaction', {
       action,
       session_id: this.sessionId,
       time_on_page: this.getTimeSpent(),
@@ -135,11 +112,10 @@ class AnalyticsService {
     });
   }
 
-  // Quiz flow events
   trackQuizStarted(): void {
     this.trackPageView('Quiz Started');
     
-    mixpanel.track('Quiz Started', {
+    this.track('Quiz Started', {
       session_id: this.sessionId,
       time_to_start: this.getTimeSpent(),
       timestamp: new Date().toISOString(),
@@ -159,7 +135,7 @@ class AnalyticsService {
       question_type: questionType,
     });
 
-    mixpanel.track('Question Viewed', {
+    this.track('Question Viewed', {
       question_id: questionId,
       question_text: questionText,
       question_type: questionType,
@@ -169,22 +145,22 @@ class AnalyticsService {
     });
   }
 
-  trackAnswerSelected(questionId: number, answer: string | string[], questionType: 'single' | 'multiple'): void {
+  trackAnswerSelected(questionId: number, answer: QuizAnswer, questionType: 'single' | 'multiple'): void {
     const timeSpent = this.getQuestionTimeSpent();
     const answers = this.getQuizAnswers();
     
-    mixpanel.track('Answer Selected', {
+    this.track('Answer Selected', {
       question_id: questionId,
-      answer: answer,
+      question_text: '', 
       question_type: questionType,
+      answer: answer,
       time_spent_on_question: timeSpent,
       session_id: this.sessionId,
       total_answers: Object.keys(answers).length + 1,
       timestamp: new Date().toISOString(),
     });
 
-    // Update user properties with the answer
-    const answerKey = `question_${questionId}_answer`;
+    const answerKey = `question_${questionId}_answer` as const;
     mixpanel.people.set({
       [answerKey]: answer,
       total_questions_answered: Object.keys(answers).length + 1,
@@ -195,26 +171,18 @@ class AnalyticsService {
   trackQuestionSkipped(questionId: number, questionText: string): void {
     const timeSpent = this.getQuestionTimeSpent();
     
-    mixpanel.track('Question Skipped', {
+    this.track('Question Skipped', {
       question_id: questionId,
       question_text: questionText,
+      question_type: 'single',
       time_spent_on_question: timeSpent,
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
-
-    // Track skipped questions count
-    const skippedCount = (localStorage.getItem('questions_skipped') || '0');
-    const newSkippedCount = parseInt(skippedCount) + 1;
-    localStorage.setItem('questions_skipped', newSkippedCount.toString());
-    
-    mixpanel.people.set({
-      questions_skipped: newSkippedCount,
-    });
   }
 
   trackBackNavigation(fromQuestionId: number, toQuestionId: number): void {
-    mixpanel.track('Back Navigation', {
+    this.track('Back Navigation', {
       from_question: fromQuestionId,
       to_question: toQuestionId,
       session_id: this.sessionId,
@@ -228,29 +196,30 @@ class AnalyticsService {
       info_title: infoTitle,
     });
 
-    mixpanel.track('Info Page Viewed', {
+    this.track('Info Page Viewed', {
       question_id: questionId,
-      info_title: infoTitle,
+      question_text: infoTitle,
+      question_type: 'single',
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
   }
 
-  // Quiz completion events
   trackQuizCompleted(): void {
     const totalTime = this.getTimeSpent();
     const answers = this.getQuizAnswers();
-    const skippedCount = parseInt(localStorage.getItem('questions_skipped') || '0');
     const completedCount = Object.keys(answers).length;
+    const totalQuestions = getTotalQuestions();
+    const skippedCount = totalQuestions - completedCount;
     
     this.trackPageView('Quiz Completed');
     
-    mixpanel.track('Quiz Completed', {
+    this.track('Quiz Completed', {
       session_id: this.sessionId,
       total_time_spent: totalTime,
       questions_answered: completedCount,
       questions_skipped: skippedCount,
-      completion_rate: (completedCount / (completedCount + skippedCount)) * 100,
+      completion_rate: completedCount > 0 ? (completedCount / totalQuestions) * 100 : 0,
       all_answers: answers,
       timestamp: new Date().toISOString(),
     });
@@ -259,24 +228,22 @@ class AnalyticsService {
       quiz_completed: true,
       quiz_completion_date: new Date().toISOString(),
       time_to_complete_quiz: totalTime,
-      final_completion_rate: (completedCount / (completedCount + skippedCount)) * 100,
+      final_completion_rate: completedCount > 0 ? (completedCount / totalQuestions) * 100 : 0,
     });
   }
 
-  // Loader and analysis events
   trackAnalysisStarted(): void {
     this.trackPageView('Analysis Started');
     
-    mixpanel.track('Analysis Started', {
+    this.track('Analysis Started', {
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
   }
 
   trackAnalysisProgress(percentage: number, currentStep: string): void {
-    // Only track key milestones to avoid spam
     if (percentage % 25 === 0 || percentage === 100) {
-      mixpanel.track('Analysis Progress', {
+      this.track('Analysis Progress', {
         percentage,
         current_step: currentStep,
         session_id: this.sessionId,
@@ -285,11 +252,10 @@ class AnalyticsService {
     }
   }
 
-  // Pricing and conversion events
   trackPricingPageViewed(): void {
     this.trackPageView('Pricing Page');
     
-    mixpanel.track('Pricing Page Viewed', {
+    this.track('Pricing Page Viewed', {
       session_id: this.sessionId,
       total_funnel_time: this.getTimeSpent(),
       timestamp: new Date().toISOString(),
@@ -299,20 +265,19 @@ class AnalyticsService {
       reached_pricing: true,
     });
 
-    // Increment pricing page views counter
     mixpanel.people.increment('pricing_page_views');
   }
 
-  trackPlanSelected(planType: 'annual' | 'monthly'): void {
-    mixpanel.track('Plan Selected', {
+  trackPlanSelected(planType: PlanType): void {
+    this.track('Plan Selected', {
       plan_type: planType,
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
   }
 
-  trackCheckoutStarted(planType: string, planPrice: number): void {
-    mixpanel.track('Checkout Started', {
+  trackCheckoutStarted(planType: PlanType, planPrice: number): void {
+    this.track('Checkout Started', {
       plan_type: planType,
       plan_price: planPrice,
       session_id: this.sessionId,
@@ -321,9 +286,8 @@ class AnalyticsService {
     });
   }
 
-  // Dropout tracking
   trackDropoff(page: string, reason?: string): void {
-    mixpanel.track('User Dropped Off', {
+    this.track('User Dropped Off', {
       page,
       reason,
       session_id: this.sessionId,
@@ -333,9 +297,8 @@ class AnalyticsService {
     });
   }
 
-  // Error tracking
   trackError(error: Error, context: string): void {
-    mixpanel.track('Error Occurred', {
+    this.track('Error Occurred', {
       error_message: error.message,
       error_stack: error.stack,
       context,
@@ -344,13 +307,11 @@ class AnalyticsService {
     });
   }
 
-  // Custom events for specific insights
   trackUserSegment(): void {
     const answers = this.getQuizAnswers();
     
-    // Analyze user segments based on answers
-    let userSegment = 'unknown';
-    let primaryMotivation = 'unknown';
+    let userSegment: UserSegment = 'unknown';
+    let primaryMotivation: PrimaryMotivation = 'unknown';
     
     if (answers[1]) {
       const motivation = Array.isArray(answers[1]) ? answers[1][0] : answers[1];
@@ -377,7 +338,7 @@ class AnalyticsService {
       primary_motivation: primaryMotivation,
     });
 
-    mixpanel.track('User Segment Identified', {
+    this.track('User Segment Identified', {
       user_segment: userSegment,
       primary_motivation: primaryMotivation,
       session_id: this.sessionId,
@@ -386,10 +347,7 @@ class AnalyticsService {
   }
 }
 
-// Export singleton instance
 export const analytics = new AnalyticsService();
-
-// Convenience functions
 export const track = analytics.trackPageView.bind(analytics);
 export const identify = analytics.identifyUser.bind(analytics);
 

@@ -4,34 +4,25 @@ import {
   getTotalQuestions, 
   isMultipleChoiceQuestion,
 } from '@/lib/questions';
+import { ROUTES } from '@/lib/constants';
+import type { QuestionPageParams } from '@/lib/types';
 import QuizAnswers from './QuizAnswers';
 import QuestionTracker from './components/QuestionTracker';
-
-// Constants
-const ROUTES = {
-  QUIZ_END: '/quiz-end',
-  INFO: (id: number) => `/quiz/${id}/info`,
-  QUESTION: (id: number) => `/quiz/${id}`,
-} as const;
+import QuizHeader from './components/QuizHeader';
 
 type Props = {
-  params: Promise<{
-    questionId: string;
-  }>;
+  params: Promise<QuestionPageParams>;
 };
 
-// Main component
 export default async function QuestionPage({ params }: Props) {
   const { questionId } = await params;
   const questionIdNum = parseInt(questionId, 10);
   const question = getQuestionById(questionIdNum);
 
-  // Validation
   if (!question) {
     return notFound();
   }
 
-  // Calculate values for client component
   const totalQuestions = getTotalQuestions();
   const progress = (questionIdNum / totalQuestions) * 100;
   
@@ -46,20 +37,15 @@ export default async function QuestionPage({ params }: Props) {
       : ROUTES.QUESTION(prevQuestionId);
   };
 
-  const getSkipUrl = (): string => {
-    if (question.info) {
-      return ROUTES.INFO(questionIdNum);
-    }
-    
-    const nextId = questionIdNum + 1;
-    return nextId > totalQuestions 
-      ? ROUTES.QUIZ_END 
-      : ROUTES.QUESTION(nextId);
-  };
-
   const isMultipleChoice = isMultipleChoiceQuestion(question);
   const previousPageUrl = getPreviousPageUrl();
-  const skipUrl = getSkipUrl();
+  
+  // Calculate skip URL
+  const skipUrl = question.info 
+    ? ROUTES.INFO(questionIdNum)
+    : questionIdNum + 1 > totalQuestions 
+      ? ROUTES.QUIZ_END 
+      : ROUTES.QUESTION(questionIdNum + 1);
 
   return (
     <main className="flex flex-col items-center min-h-screen p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
@@ -70,24 +56,13 @@ export default async function QuestionPage({ params }: Props) {
         isFirstQuestion={questionIdNum === 1}
       />
       
-      {/* QuizHeader component inline */}
-      <div className="w-full flex justify-center items-start pt-0 -mt-8 mb-8">
-        <a href="https://www.atly.com/" target="_blank" rel="noopener noreferrer">
-          <img 
-            src="/atly-logo.png" 
-            alt="Atly logo" 
-            className="h-28 w-auto drop-shadow-2xl rounded-2xl backdrop-blur-lg cursor-pointer hover:scale-105 transition-transform duration-200" 
-            style={{ background: 'none' }} 
-          />
-        </a>
-      </div>
+      <QuizHeader />
       
       <div className="w-full max-w-2xl" style={{ marginTop: '30px' }}>
         <h1 className="text-2xl md:text-4xl font-bold text-white mb-8 drop-shadow-lg">
           {question.question}
         </h1>
         
-        {/* QuizProgress component inline */}
         <div className="flex items-center justify-between mb-8 w-full">
           <div className="flex-shrink-0 w-16">
             {previousPageUrl ? (
@@ -128,7 +103,6 @@ export default async function QuestionPage({ params }: Props) {
         <QuizAnswers 
           question={question}
           isMultipleChoice={isMultipleChoice}
-          skipUrl={skipUrl}
         />
       </div>
     </main>
