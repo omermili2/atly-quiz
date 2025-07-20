@@ -122,7 +122,7 @@ export default function PricingPage() {
       
       <div className="w-full max-w-md mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-lg md:text-3xl font-bold text-white mb-4 whitespace-nowrap">Start your 7-day free trial</h1>
+          <h1 className="text-3xl font-bold text-white mb-4">Start your 7-day free trial</h1>
         </div>
 
         <div className="space-y-4 mb-8">

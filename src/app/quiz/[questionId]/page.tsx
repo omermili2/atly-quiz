@@ -59,11 +59,11 @@ export default async function QuestionPage({ params }: Props) {
         isFirstQuestion={questionIdNum === 1}
       />
       
-      <Header logoSize="lg" spacing="sm" className="mt-1 md:mt-2 -mb-2 md:-mb-4" />
+      <Header logoSize="lg" spacing="sm" className="mt-2 md:mt-2 -mb-1 md:-mb-4" />
       
       <Section maxWidth="2xl" spacing="sm" className="mt-0 md:mt-0 flex-1 flex flex-col pt-4 md:pt-12">
-        <div className="space-y-3 md:space-y-6">
-          <h1 className="text-lg md:text-4xl font-bold text-white drop-shadow-lg leading-tight">
+        <div className="space-y-2 md:space-y-6">
+          <h1 className="text-base md:text-4xl font-bold text-white drop-shadow-lg leading-tight">
             {question.question}
           </h1>
           

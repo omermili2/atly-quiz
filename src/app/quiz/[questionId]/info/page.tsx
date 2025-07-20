@@ -12,7 +12,6 @@ import Button from '@/components/ui/Button';
 import InfoIllustration from './InfoIllustration';
 import QuizHeader from '../components/QuizHeader';
 import InfoTracker from './InfoTracker';
-import PageLayout from '@/components/layout/PageLayout';
 
 type Props = {
   params: Promise<QuestionPageParams>;
@@ -88,13 +87,13 @@ function getNextPageUrl(questionId: number): string {
 
 function AnimatedFact({ fact, delay }: { fact: InfoData['facts'][0], delay: number }) {
   return (
-    <div className="flex justify-center w-full">
+    <div className="w-full flex justify-center">
       <div 
-        className="inline-flex items-center gap-4 text-white/90 animate-fade-in bg-white/10 backdrop-blur-sm rounded-xl p-4 max-w-fit"
+        className="flex items-center gap-4 text-white/90 animate-fade-in bg-white/10 backdrop-blur-sm rounded-xl p-4 w-fit"
         style={{ animationDelay: `${delay}ms` }}
       >
         <span 
-          className="text-3xl animate-bounce flex-shrink-0" 
+          className="text-3xl animate-bounce" 
           style={{ 
             animationDelay: `${delay + 200}ms`,
             animationDuration: '1s',
@@ -103,7 +102,7 @@ function AnimatedFact({ fact, delay }: { fact: InfoData['facts'][0], delay: numb
         >
           {fact.icon}
         </span>
-        <span className="text-base md:text-lg font-medium text-left">
+        <span className="text-base md:text-lg font-medium">
           {fact.highlight ? (
             <>
               {fact.text.split(fact.highlight)[0]}
@@ -126,21 +125,21 @@ function InfoContent({ question }: { question: QuizQuestion }) {
   if (!infoData) return null;
   
   return (
-    <div className="w-full flex flex-col items-center pt-4 md:pt-12 px-4 max-w-3xl mx-auto">
+    <div className="w-full flex flex-col items-center pt-2 md:pt-12 px-4 max-w-3xl mx-auto">
       {/* Header Image */}
       <InfoIllustration title={question.info.title} />
       
       {/* Title & Subtitle */}
-      <h1 className="text-xl md:text-4xl font-extrabold text-white mb-2 drop-shadow-lg text-center whitespace-nowrap">
+      <h1 className="text-lg md:text-4xl font-extrabold text-white mb-1 md:mb-2 drop-shadow-lg text-center whitespace-nowrap">
         {infoData.title}
       </h1>
       
-      <p className="text-lg md:text-xl text-white/80 mb-8 font-medium text-center">
+      <p className="text-base md:text-xl text-white/80 mb-4 md:mb-8 font-medium text-center">
         {infoData.subtitle}
       </p>
       
       {/* Facts Container */}
-      <div className="w-full space-y-4 md:space-y-6 max-w-2xl">
+      <div className="w-full space-y-2 md:space-y-6 max-w-2xl">
         {infoData.facts.map((fact, index) => (
           <AnimatedFact 
             key={index} 
@@ -151,8 +150,8 @@ function InfoContent({ question }: { question: QuizQuestion }) {
       </div>
       
       {/* CTA Text */}
-      <div className="mt-8 text-center">
-        <p className="text-pink-200 font-semibold text-lg md:text-xl">
+      <div className="mt-4 md:mt-8 text-center">
+        <p className="text-pink-200 font-semibold text-base md:text-xl">
           {infoData.cta}
         </p>
       </div>
@@ -165,9 +164,9 @@ function InfoNavigation({ questionId }: { questionId: number }) {
   const previousPageUrl = `/quiz/${questionId}`;
   
   return (
-    <div className="w-full max-w-xs mt-8">
+    <div className="w-full max-w-xs mt-4 md:mt-8">
       <Link href={nextPageUrl} className="w-full">
-        <Button fullWidth className="mb-4">
+        <Button fullWidth className="mb-2 md:mb-4">
           Continue
         </Button>
       </Link>
@@ -175,7 +174,7 @@ function InfoNavigation({ questionId }: { questionId: number }) {
       <div className="text-center">
         <a 
           href={previousPageUrl} 
-          className="text-gray-300 text-base hover:text-gray-200 transition-colors duration-150"
+          className="text-gray-300 text-sm md:text-base hover:text-gray-200 transition-colors duration-150"
         >
           Back
         </a>
@@ -200,7 +199,7 @@ export default async function InfoPage({ params }: Props) {
   }
 
   return (
-    <PageLayout variant="default">
+    <main className="flex flex-col items-center min-h-screen p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
       <InfoTracker 
         questionId={questionIdNum} 
         infoTitle={question.info.title} 
@@ -211,6 +210,6 @@ export default async function InfoPage({ params }: Props) {
       <InfoContent question={question} />
       
       <InfoNavigation questionId={questionIdNum} />
-    </PageLayout>
+    </main>
   );
 } 
