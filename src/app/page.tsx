@@ -1,12 +1,12 @@
 "use client";
 import Link from 'next/link';
-import { ShieldCheck, Award, Map, Star } from 'lucide-react';
+import { ShieldCheck, Award, Map } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TESTIMONIAL_ANIMATION_DELAY, TESTIMONIAL_STAGGER_DELAY } from '@/lib/constants';
 import Button from '@/components/ui/Button';
+import TestimonialCard from '@/components/ui/TestimonialCard';
 import type { Testimonial, LandingPageAction } from '@/lib/types';
 import analytics from '@/lib/analytics';
-
 
 function ProofItem({ icon, text }: { icon: React.ReactNode, text: string }) {
   return (
@@ -94,27 +94,13 @@ export default function WelcomePage() {
 
         <div className="w-full flex justify-center">
           <div className="flex flex-col md:flex-row gap-3 overflow-x-auto pb-1 px-1 md:overflow-visible md:pb-0 md:px-0 max-w-full md:max-w-3xl justify-center mx-auto">
-            {testimonials.map((t, i) => (
-              <div
-                key={t.name}
-                className={`bg-white/90 backdrop-blur-sm text-gray-800 rounded-xl p-2 w-7/8 mt-1 mx-auto md:w-full md:min-w-[206px] md:max-w-[300px] text-left shadow-lg flex-shrink-0 transition-all duration-700 ease-out
-                  ${visible > i ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-                `}
-                style={{ transitionDelay: `${i * TESTIMONIAL_STAGGER_DELAY}ms` }}
-              >
-                <p className="font-semibold mb-1 text-xs md:text-sm">&quot;{t.quote}&quot;</p>
-                <div className="flex items-center justify-between mt-1">
-                  <div className="flex items-center gap-1.5">
-                    <img src={t.avatar} alt={t.name} className="w-6 h-6 rounded-full border-2 border-white" />
-                    <span className="text-sm font-bold">{t.name}</span>
-                  </div>
-                  <div className="flex">
-                    {[...Array(t.stars)].map((_, idx) => (
-                      <Star key={idx} size={12} className="text-yellow-500 fill-yellow-500" />
-                    ))}
-                  </div>
-                </div>
-              </div>
+            {testimonials.map((testimonial, i) => (
+              <TestimonialCard
+                key={testimonial.name}
+                testimonial={testimonial}
+                isVisible={visible > i}
+                animationDelay={i * TESTIMONIAL_STAGGER_DELAY}
+              />
             ))}
           </div>
         </div>

@@ -6,9 +6,12 @@ import {
 } from '@/lib/questions';
 import { ROUTES } from '@/lib/constants';
 import type { QuestionPageParams } from '@/lib/types';
+import PageLayout from '@/components/layout/PageLayout';
+import Header from '@/components/layout/Header';
+import Section from '@/components/layout/Section';
+import ProgressBar from '@/components/ui/ProgressBar';
 import QuizAnswers from './QuizAnswers';
 import QuestionTracker from './components/QuestionTracker';
-import QuizHeader from './components/QuizHeader';
 
 type Props = {
   params: Promise<QuestionPageParams>;
@@ -48,7 +51,7 @@ export default async function QuestionPage({ params }: Props) {
       : ROUTES.QUESTION(questionIdNum + 1);
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
+    <PageLayout variant="default">
       <QuestionTracker 
         questionId={questionIdNum}
         questionText={question.question}
@@ -56,45 +59,18 @@ export default async function QuestionPage({ params }: Props) {
         isFirstQuestion={questionIdNum === 1}
       />
       
-      <QuizHeader />
+      <Header logoSize="xl" spacing="lg" className="-mt-8" />
       
-      <div className="w-full max-w-2xl" style={{ marginTop: '30px' }}>
+      <Section maxWidth="2xl" spacing="md" className="mt-[30px]">
         <h1 className="text-2xl md:text-4xl font-bold text-white mb-8 drop-shadow-lg">
           {question.question}
         </h1>
         
-        <div className="flex items-center justify-between mb-8 w-full">
-          <div className="flex-shrink-0 w-16">
-            {previousPageUrl ? (
-              <a 
-                href={previousPageUrl} 
-                className="text-gray-300 text-base hover:text-gray-200 transition-colors duration-150 flex items-center"
-              >
-                Back
-              </a>
-            ) : (
-              <div></div>
-            )}
-          </div>
-          
-          <div className="flex-1 mx-4">
-            <div className="w-full bg-white/30 rounded-full h-2.5 shadow-inner">
-              <div
-                className="bg-blue-400 h-2.5 rounded-full transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-          
-          <div className="flex-shrink-0 w-16 text-right">
-            <a 
-              href={skipUrl} 
-              className="text-gray-300 text-base hover:text-gray-200 transition-colors duration-150"
-            >
-              Skip
-            </a>
-          </div>
-        </div>
+        <ProgressBar 
+          progress={progress}
+          backUrl={previousPageUrl}
+          skipUrl={skipUrl}
+        />
 
         {isMultipleChoice && (
           <p className="text-white/80 text-sm mb-4">Select all that apply</p>
@@ -104,7 +80,7 @@ export default async function QuestionPage({ params }: Props) {
           question={question}
           isMultipleChoice={isMultipleChoice}
         />
-      </div>
-    </main>
+      </Section>
+    </PageLayout>
   );
 }

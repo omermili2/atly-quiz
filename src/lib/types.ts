@@ -1,10 +1,5 @@
-// Core application types and interfaces
-
 import type { QuestionType } from './questions';
 
-/**
- * User segment types based on quiz responses
- */
 export type UserSegment = 
   | 'celiac_diagnosed'
   | 'gluten_sensitive' 
@@ -13,9 +8,6 @@ export type UserSegment =
   | 'supporting_family'
   | 'unknown';
 
-/**
- * Primary motivation categories
- */
 export type PrimaryMotivation = 
   | 'medical_necessity'
   | 'health_conscious'
@@ -24,9 +16,6 @@ export type PrimaryMotivation =
   | 'family_support'
   | 'unknown';
 
-/**
- * Analytics event types for type-safe tracking
- */
 export type AnalyticsEventType = 
   | 'Page Viewed'
   | 'Landing Page Loaded'
@@ -47,31 +36,17 @@ export type AnalyticsEventType =
   | 'Error Occurred'
   | 'User Segment Identified';
 
-/**
- * Pricing plan types
- */
+
 export type PlanType = 'annual' | 'monthly';
 
-/**
- * Landing page interaction types
- */
 export type LandingPageAction = 'testimonial_viewed' | 'continue_clicked' | 'logo_clicked';
 
-/**
- * Quiz answer types - can be single string or array of strings
- */
 export type QuizAnswer = string | string[];
 
-/**
- * Quiz answers storage interface
- */
 export interface QuizAnswers {
   [questionId: number]: QuizAnswer;
 }
 
-/**
- * Analytics event properties for different event types
- */
 export interface BaseEventProperties {
   session_id: string;
   timestamp: string;
@@ -87,19 +62,7 @@ export interface PageViewProperties extends BaseEventProperties {
   event_type?: string;
 }
 
-export interface QuestionEventProperties extends BaseEventProperties {
-  question_id: number;
-  question_text: string;
-  question_type: QuestionType;
-  answers_so_far?: number;
-  time_spent_on_question?: number;
-  answer?: QuizAnswer;
-  total_answers?: number;
-}
-
-// Flexible analytics properties that can accommodate any event type
 export interface AnalyticsProperties extends BaseEventProperties {
-  // Page and navigation properties
   page?: string;
   url?: string;
   path?: string;
@@ -157,9 +120,6 @@ export interface AnalyticsProperties extends BaseEventProperties {
   [key: string]: string | number | boolean | QuizAnswers | QuizAnswer | undefined;
 }
 
-/**
- * User properties interface for analytics
- */
 export interface UserProperties {
   first_visit?: string;
   last_active?: string;
@@ -183,9 +143,7 @@ export interface UserProperties {
   pricing_page_views?: number;
 }
 
-/**
- * Component prop interfaces for better type safety
- */
+
 export interface BaseComponentProps {
   className?: string;
   children?: React.ReactNode;
@@ -200,16 +158,10 @@ export interface SelectableItemProps extends BaseComponentProps {
   'aria-checked'?: boolean;
 }
 
-/**
- * Route parameter types
- */
 export interface QuestionPageParams {
   questionId: string;
 }
 
-/**
- * API response types (for future use)
- */
 export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
@@ -217,17 +169,11 @@ export interface ApiResponse<T = unknown> {
   message?: string;
 }
 
-/**
- * Storage operation result types
- */
 export interface StorageResult {
   success: boolean;
   error?: string;
 }
 
-/**
- * Testimonial interface
- */
 export interface Testimonial {
   quote: string;
   name: string;

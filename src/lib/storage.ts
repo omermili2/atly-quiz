@@ -1,5 +1,5 @@
 import { STORAGE_KEYS } from './constants';
-import type { QuizAnswers, QuizAnswer, StorageResult } from './types';
+import type { QuizAnswers, StorageResult } from './types';
 
 
 function getStorageItem(key: string, defaultValue: string = ''): string {

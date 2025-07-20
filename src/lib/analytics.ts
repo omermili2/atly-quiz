@@ -10,7 +10,6 @@ import type {
   PlanType,
   LandingPageAction,
   QuizAnswer,
-  QuestionEventProperties,
   AnalyticsProperties
 } from './types';
 

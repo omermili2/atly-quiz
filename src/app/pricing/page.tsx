@@ -3,16 +3,17 @@ import { Check, CreditCard } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Logo from '@/components/ui/Logo';
 import Button from '@/components/ui/Button';
+import type { PlanType } from '@/lib/types';
 import analytics from '@/lib/analytics';
 
 export default function PricingPage() {
-  const [selectedPlan, setSelectedPlan] = useState('annual');
+  const [selectedPlan, setSelectedPlan] = useState<PlanType>('annual');
 
   useEffect(() => {
     analytics.trackPricingPageViewed();
   }, []);
 
-  const handlePlanChange = (planType: 'annual' | 'monthly') => {
+  const handlePlanChange = (planType: PlanType) => {
     setSelectedPlan(planType);
     analytics.trackPlanSelected(planType);
   };
