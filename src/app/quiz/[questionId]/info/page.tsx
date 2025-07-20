@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { 
   getQuestionById, 
-  getQuestionsWithInfo, 
   getTotalQuestions,
   type QuizQuestion 
 } from '@/lib/questions';
