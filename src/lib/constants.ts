@@ -16,4 +16,5 @@ export const ATLY_WEBSITE = "https://www.atly.com/";
 export const STORAGE_KEYS = {
   ANALYTICS_USER_ID: 'analytics_user_id',
   FIRST_VISIT: 'first_visit',
+  USER_SEGMENT_ANSWER: 'user_segment_answer',
 } as const; 

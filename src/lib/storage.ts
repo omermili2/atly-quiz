@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from './constants';
+import type { QuizAnswer } from './types';
 
 function getStorageItem(key: string, defaultValue: string = ''): string {
   if (typeof window === 'undefined') return defaultValue;
@@ -51,4 +52,32 @@ export function getFirstVisit(): string {
   const now = new Date().toISOString();
   setStorageItem(STORAGE_KEYS.FIRST_VISIT, now);
   return now;
+}
+
+/**
+ * Save user's first answer for segmentation purposes
+ */
+export function saveUserSegmentAnswer(answer: QuizAnswer): void {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    localStorage.setItem(STORAGE_KEYS.USER_SEGMENT_ANSWER, JSON.stringify(answer));
+  } catch (error) {
+    console.error('Failed to save user segment answer:', error);
+  }
+}
+
+/**
+ * Get user's first answer for segmentation
+ */
+export function getUserSegmentAnswer(): QuizAnswer | null {
+  if (typeof window === 'undefined') return null;
+  
+  try {
+    const answer = getStorageItem(STORAGE_KEYS.USER_SEGMENT_ANSWER);
+    return answer ? JSON.parse(answer) : null;
+  } catch (error) {
+    console.error('Failed to get user segment answer:', error);
+    return null;
+  }
 } 

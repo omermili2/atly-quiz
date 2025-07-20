@@ -1,6 +1,6 @@
 import mixpanel from 'mixpanel-browser';
 import { getTotalQuestions } from './questions';
-import { getAnalyticsUserId, getFirstVisit } from './storage';
+import { getAnalyticsUserId, getFirstVisit, saveUserSegmentAnswer, getUserSegmentAnswer } from './storage';
 import type { 
   UserProperties, 
   UserSegment, 
@@ -152,6 +152,11 @@ class AnalyticsService {
 
   trackAnswerSelected(questionId: number, answer: QuizAnswer, questionType: 'single' | 'multiple'): void {
     const timeSpent = this.getQuestionTimeSpent();
+    
+    // Save first answer for user segmentation
+    if (questionId === 1) {
+      saveUserSegmentAnswer(answer);
+    }
     
     this.track('Answer Selected', {
       question_id: questionId,
@@ -309,11 +314,39 @@ class AnalyticsService {
   }
 
   trackUserSegment(): void {
-    // Simplified user segmentation without localStorage dependency
-    // User segments are now primarily determined by Mixpanel's people properties
-    // which are set when answers are selected
+    const segmentAnswer = getUserSegmentAnswer();
     
+    let userSegment: UserSegment = 'unknown';
+    let primaryMotivation: PrimaryMotivation = 'unknown';
+    
+    if (segmentAnswer) {
+      const motivation = Array.isArray(segmentAnswer) ? segmentAnswer[0] : segmentAnswer;
+      if (motivation.includes('Celiac')) {
+        userSegment = 'celiac_diagnosed';
+        primaryMotivation = 'medical_necessity';
+      } else if (motivation.includes('sensitivity')) {
+        userSegment = 'gluten_sensitive';
+        primaryMotivation = 'health_conscious';
+      } else if (motivation.includes('wellness')) {
+        userSegment = 'wellness_focused';
+        primaryMotivation = 'lifestyle_choice';
+      } else if (motivation.includes('athlete')) {
+        userSegment = 'performance_athlete';
+        primaryMotivation = 'performance_optimization';
+      } else if (motivation.includes('support')) {
+        userSegment = 'supporting_family';
+        primaryMotivation = 'family_support';
+      }
+    }
+
+    mixpanel.people.set({
+      user_segment: userSegment,
+      primary_motivation: primaryMotivation,
+    });
+
     this.track('User Segment Identified', {
+      user_segment: userSegment,
+      primary_motivation: primaryMotivation,
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
