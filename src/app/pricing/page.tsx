@@ -8,6 +8,10 @@ import analytics from '@/lib/analytics';
 
 export default function PricingPage() {
   const [selectedPlan, setSelectedPlan] = useState<PlanType>('annual');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [expiryError, setExpiryError] = useState('');
 
   useEffect(() => {
     analytics.trackPricingPageViewed();
@@ -22,6 +26,74 @@ export default function PricingPage() {
     const planPrice = selectedPlan === 'annual' ? 69.99 : 13.99;
     analytics.trackCheckoutStarted(selectedPlan, planPrice);
     // Add your checkout logic here
+  };
+
+  const formatCardNumber = (value: string) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    const matches = v.match(/\d{4,16}/g);
+    const match = matches && matches[0] || '';
+    const parts = [];
+    for (let i = 0, len = match.length; i < len; i += 4) {
+      parts.push(match.substring(i, i + 4));
+    }
+    if (parts.length) {
+      return parts.join(' ');
+    } else {
+      return v;
+    }
+  };
+
+  const formatExpiryDate = (value: string) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    
+    if (v.length >= 2) {
+      const month = v.substring(0, 2);
+      const year = v.substring(2, 4);
+      return month + (year.length > 0 ? ' / ' + year : '');
+    }
+    
+    return v;
+  };
+
+  const validateExpiryDate = (value: string) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+    
+    if (v.length === 4) {
+      const month = parseInt(v.substring(0, 2));
+      const year = parseInt(v.substring(2, 4));
+      
+      if (month < 1 || month > 12 || year < currentYear || (year === currentYear && month < currentMonth))  {
+        return 'Invalid expiration date';
+      }
+
+    } else if (v.length > 0) {
+      return 'Please enter complete date (MM/YY)';
+    }
+    
+    return '';
+  };
+
+  const formatCvv = (value: string) => {
+    return value.replace(/[^0-9]/gi, '').substring(0, 3);
+  };
+
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCardNumber(e.target.value);
+    setCardNumber(formatted);
+  };
+
+  const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatExpiryDate(e.target.value);
+    setExpiryDate(formatted);
+    const error = validateExpiryDate(formatted);
+    setExpiryError(error);
+  };
+
+  const handleCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCvv(e.target.value);
+    setCvv(formatted);
   };
 
   return (
@@ -128,12 +200,15 @@ export default function PricingPage() {
                 <input
                   type="text"
                   placeholder="1234 1234 1234 1234"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ff7eb3] focus:border-transparent outline-none"
+                  value={cardNumber}
+                  onChange={handleCardNumberChange}
+                  maxLength={19}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ff7eb3] focus:border-transparent outline-none text-gray-900 font-medium"
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex gap-1">
-                  <img src="https://img.icons8.com/color/24/visa.png" alt="Visa" className="w-6 h-4" />
-                  <img src="https://img.icons8.com/color/24/mastercard.png" alt="Mastercard" className="w-6 h-4" />
-                  <img src="https://img.icons8.com/color/24/amex.png" alt="Amex" className="w-6 h-4" />
+                  <img src="https://img.icons8.com/color/32/visa.png" alt="Visa" className="w-7 h-6" />
+                  <img src="https://img.icons8.com/color/32/mastercard.png" alt="Mastercard" className="w-7 h-6" />
+                  <img src="https://img.icons8.com/color/32/amex.png" alt="Amex" className="w-7 h-6" />
                 </div>
               </div>
             </div>
@@ -144,8 +219,16 @@ export default function PricingPage() {
                 <input
                   type="text"
                   placeholder="MM / YY"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ff7eb3] focus:border-transparent outline-none"
+                  value={expiryDate}
+                  onChange={handleExpiryChange}
+                  maxLength={7}
+                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 outline-none text-gray-900 font-medium ${
+                    expiryError 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                      : 'border-gray-200 focus:ring-[#ff7eb3] focus:border-transparent'
+                  }`}
                 />
+                {expiryError && <p className="text-red-500 text-xs mt-1">{expiryError}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Security code</label>
@@ -153,7 +236,10 @@ export default function PricingPage() {
                   <input
                     type="text"
                     placeholder="CVC"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ff7eb3] focus:border-transparent outline-none"
+                    value={cvv}
+                    onChange={handleCvvChange}
+                    maxLength={3}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ff7eb3] focus:border-transparent outline-none text-gray-900 font-medium"
                   />
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                     <CreditCard size={16} className="text-gray-400" />

@@ -17,6 +17,7 @@ type Props = {
 export default function QuizAnswers({ question, isMultipleChoice }: Props) {
   const router = useRouter();
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const [isAnswerSelected, setIsAnswerSelected] = useState(false);
 
   const handleMultipleChoiceChange = (answer: string, isSelected: boolean) => {
     const newSelectedAnswers = isSelected
@@ -25,6 +26,10 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
     
     setSelectedAnswers(newSelectedAnswers);
     saveMultipleAnswers(question.id, newSelectedAnswers);
+  };
+
+  const handleSingleAnswerSelection = () => {
+    setIsAnswerSelected(true);
   };
 
   const handleContinue = () => {
@@ -56,6 +61,8 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
               key={index}
               questionId={question.id}
               answer={answer}
+              disabled={isAnswerSelected}
+              onSelect={handleSingleAnswerSelection}
             />
           )
         ))}

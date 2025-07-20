@@ -12,6 +12,8 @@ import analytics from '@/lib/analytics';
 type Props = {
   questionId: number;
   answer: string;
+  disabled?: boolean;
+  onSelect?: () => void;
 };
 
 function getNextRoute(questionId: number): string {
@@ -28,14 +30,15 @@ function getNextRoute(questionId: number): string {
     : ROUTES.QUIZ_END;
 }
 
-export default function AnswerCard({ questionId, answer }: Props) {
+export default function AnswerCard({ questionId, answer, disabled = false, onSelect }: Props) {
   const router = useRouter();
   const [isSelected, setIsSelected] = useState(false);
 
   const handleSelect = () => {
-    if (isSelected) return;
+    if (isSelected || disabled) return;
     
     setIsSelected(true);
+    onSelect?.();
     
     analytics.trackAnswerSelected(questionId, answer, 'single');
     
@@ -60,6 +63,7 @@ export default function AnswerCard({ questionId, answer }: Props) {
       onClick={handleSelect}
       onKeyDown={handleKeyDown}
       ariaPressed={isSelected}
+      className={disabled && !isSelected ? 'pointer-events-none' : ''}
     >
       <div className="flex items-center justify-between">
         <p className={`text-sm md:text-lg font-semibold leading-snug ${

@@ -2,22 +2,22 @@
 import { useEffect, useState } from 'react';
 import Logo from '@/components/ui/Logo';
 
-const analysisSteps = [
+const progressCurve = [0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100];
+const stepPercents = [0, 10, 35, 60, 72, 85];
+
+const steps = [
   'Analyzing your responses...',
-  'Identifying key challenges...',
-  'Reviewing community recommendations...',
-  'Personalizing your experience...',
-  'Building your gluten-free plan...',
-  'Finalizing your results...'
+  'Finding nearby gluten-free places...',
+  'Checking community reviews...',
+  'Personalizing recommendations...',
+  'Validating safety ratings...',
+  'Finalizing your profile...',
 ];
 
 export default function LoaderPage() {
   const [analysisStatus] = useState('analyzing');
   const [currentStep, setCurrentStep] = useState(0);
   const [percent, setPercent] = useState(0);
-
-  const progressCurve = [0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100];
-  const stepPercents = [0, 10, 35, 60, 72, 85];
 
   useEffect(() => {
     
@@ -98,7 +98,7 @@ export default function LoaderPage() {
             Analyzing Your Results
           </h1>
           <h2 className="text-xl text-white drop-shadow-lg mt-6 min-h-[2.5rem]">
-            {analysisSteps[currentStep]}
+            {steps[currentStep]}
           </h2>
         </div>
       </main>

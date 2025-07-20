@@ -11,8 +11,8 @@ import analytics from '@/lib/analytics';
 
 const emojiGrid = [
   '🍽️', '🍷', '🥗',
-  '🥘', '🍜', '🥪',
-  '🍕', '🍗', '🌭',
+  '🥘', '🍜', '🌭',
+  '🍓', '🍗', '🥑',
 ];
 
 export default function QuizEndPage() {
