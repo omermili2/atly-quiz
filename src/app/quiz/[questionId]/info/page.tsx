@@ -1,5 +1,8 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect } from 'react';
 import { notFound } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { 
   getQuestionById, 
@@ -7,15 +10,10 @@ import {
   getTotalQuestions,
   type QuizQuestion 
 } from '@/lib/questions';
-import type { QuestionPageParams } from '@/lib/types';
 import Button from '@/components/ui/Button';
 import InfoIllustration from './InfoIllustration';
 import QuizHeader from '../components/QuizHeader';
 import InfoTracker from './InfoTracker';
-
-type Props = {
-  params: Promise<QuestionPageParams>;
-};
 
 interface InfoData {
   icon: string;
@@ -89,11 +87,11 @@ function AnimatedFact({ fact, delay }: { fact: InfoData['facts'][0], delay: numb
   return (
     <div className="w-full flex justify-center">
       <div 
-        className="flex items-center gap-4 text-white/90 animate-fade-in bg-white/10 backdrop-blur-sm rounded-xl p-4 w-fit"
+        className="flex items-center gap-2 md:gap-4 text-white/90 animate-fade-in bg-white/10 backdrop-blur-sm rounded-xl p-2 md:p-4 w-fit"
         style={{ animationDelay: `${delay}ms` }}
       >
         <span 
-          className="text-3xl animate-bounce" 
+          className="text-xl md:text-3xl animate-bounce" 
           style={{ 
             animationDelay: `${delay + 200}ms`,
             animationDuration: '1s',
@@ -102,7 +100,7 @@ function AnimatedFact({ fact, delay }: { fact: InfoData['facts'][0], delay: numb
         >
           {fact.icon}
         </span>
-        <span className="text-base md:text-lg font-medium">
+        <span className="text-sm md:text-lg font-medium">
           {fact.highlight ? (
             <>
               {fact.text.split(fact.highlight)[0]}
@@ -183,14 +181,17 @@ function InfoNavigation({ questionId }: { questionId: number }) {
   );
 }
 
-export function generateStaticParams() {
-  return getQuestionsWithInfo().map(q => ({ 
-    questionId: q.id.toString() 
-  }));
+function ScrollToTop({ questionId }: { questionId: number }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [questionId]);
+  
+  return null;
 }
 
-export default async function InfoPage({ params }: Props) {
-  const { questionId } = await params;
+export default function InfoPage() {
+  const params = useParams();
+  const questionId = params.questionId as string;
   const questionIdNum = parseInt(questionId, 10);
   const question = getQuestionById(questionIdNum);
   
@@ -199,7 +200,8 @@ export default async function InfoPage({ params }: Props) {
   }
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
+    <main className="flex flex-col items-center min-h-screen p-4 md:p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
+      <ScrollToTop questionId={questionIdNum} />
       <InfoTracker 
         questionId={questionIdNum} 
         infoTitle={question.info.title} 

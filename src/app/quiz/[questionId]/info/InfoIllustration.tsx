@@ -22,7 +22,7 @@ export default function InfoIllustration({ title }: { title: string }) {
     <img
       src={imageUrl}
       alt={`Illustration for ${title}`}
-      className="w-32 h-32 object-cover rounded-full shadow-lg mb-4"
+      className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-full shadow-lg mb-2 md:mb-4"
       style={{ background: 'none' }}
       onError={(e) => {
         const target = e.target as HTMLImageElement;

@@ -15,6 +15,14 @@ const emojiGrid = [
   '🍓', '🍗', '🥑',
 ];
 
+function ScrollToTop() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+  return null;
+}
+
 export default function QuizEndPage() {
   const router = useRouter();
 
@@ -28,6 +36,7 @@ export default function QuizEndPage() {
 
   return (
     <PageLayout variant="default">
+      <ScrollToTop />
       <Header logoSize="lg" spacing="sm" />
       
       <Section maxWidth="2xl" className="flex flex-col items-center justify-center animate-fade-in">

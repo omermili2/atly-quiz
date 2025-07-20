@@ -1,11 +1,14 @@
+'use client';
+
 import { notFound } from 'next/navigation';
+import { useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { 
   getQuestionById, 
   getTotalQuestions, 
   isMultipleChoiceQuestion,
 } from '@/lib/questions';
 import { ROUTES } from '@/lib/constants';
-import type { QuestionPageParams } from '@/lib/types';
 import PageLayout from '@/components/layout/PageLayout';
 import Header from '@/components/layout/Header';
 import Section from '@/components/layout/Section';
@@ -13,12 +16,17 @@ import ProgressBar from '@/components/ui/ProgressBar';
 import QuizAnswers from './QuizAnswers';
 import QuestionTracker from './components/QuestionTracker';
 
-type Props = {
-  params: Promise<QuestionPageParams>;
-};
+function ScrollToTop({ questionId }: { questionId: number }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [questionId]);
+  
+  return null;
+}
 
-export default async function QuestionPage({ params }: Props) {
-  const { questionId } = await params;
+export default function QuestionPage() {
+  const params = useParams();
+  const questionId = params.questionId as string;
   const questionIdNum = parseInt(questionId, 10);
   const question = getQuestionById(questionIdNum);
 
@@ -52,6 +60,7 @@ export default async function QuestionPage({ params }: Props) {
 
   return (
     <PageLayout variant="default">
+      <ScrollToTop questionId={questionIdNum} />
       <QuestionTracker 
         questionId={questionIdNum}
         questionText={question.question}
