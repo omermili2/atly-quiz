@@ -14,14 +14,6 @@ const steps = [
   'Finalizing your profile...',
 ];
 
-function ScrollToTop() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  
-  return null;
-}
-
 export default function LoaderPage() {
   const [analysisStatus] = useState('analyzing');
   const [currentStep, setCurrentStep] = useState(0);
@@ -67,7 +59,6 @@ export default function LoaderPage() {
   if (analysisStatus === 'analyzing') {
     return (
       <main className="flex flex-col items-center justify-start min-h-screen text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] p-4 pt-[18vh]">
-        <ScrollToTop />
         <header className="w-full flex items-center mb-4 justify-center">
           <Logo size="lg" />
         </header>

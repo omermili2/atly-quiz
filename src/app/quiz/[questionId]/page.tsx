@@ -1,7 +1,6 @@
 'use client';
 
 import { notFound } from 'next/navigation';
-import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { 
   getQuestionById, 
@@ -15,14 +14,6 @@ import Section from '@/components/layout/Section';
 import ProgressBar from '@/components/ui/ProgressBar';
 import QuizAnswers from './QuizAnswers';
 import QuestionTracker from './components/QuestionTracker';
-
-function ScrollToTop({ questionId }: { questionId: number }) {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [questionId]);
-  
-  return null;
-}
 
 export default function QuestionPage() {
   const params = useParams();
@@ -60,7 +51,6 @@ export default function QuestionPage() {
 
   return (
     <PageLayout variant="default">
-      <ScrollToTop questionId={questionIdNum} />
       <QuestionTracker 
         questionId={questionIdNum}
         questionText={question.question}

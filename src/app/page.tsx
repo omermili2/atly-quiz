@@ -8,14 +8,6 @@ import TestimonialCard from '@/components/ui/TestimonialCard';
 import type { Testimonial, LandingPageAction } from '@/lib/types';
 import analytics from '@/lib/analytics';
 
-function ScrollToTop() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  
-  return null;
-}
-
 function ProofItem({ icon, text }: { icon: React.ReactNode, text: string }) {
   return (
     <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-white/80">
@@ -68,7 +60,6 @@ export default function WelcomePage() {
       <div className="absolute inset-0 bg-gradient-to-t from-[#5a2d91]/80 via-[#2b2e7a]/50 to-transparent z-10"></div>
       
       <main className="relative z-20 flex flex-col min-h-screen p-6 text-center text-white">
-        <ScrollToTop />
 
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8 mb-8 md:mb-[25px] md:flex-grow md:justify-center">
           {/* Mobile layout */}

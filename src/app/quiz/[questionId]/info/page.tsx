@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { notFound } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
@@ -180,14 +180,6 @@ function InfoNavigation({ questionId }: { questionId: number }) {
   );
 }
 
-function ScrollToTop({ questionId }: { questionId: number }) {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [questionId]);
-  
-  return null;
-}
-
 export default function InfoPage() {
   const params = useParams();
   const questionId = params.questionId as string;
@@ -199,8 +191,7 @@ export default function InfoPage() {
   }
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-4 md:p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
-      <ScrollToTop questionId={questionIdNum} />
+    <main className="flex flex-col items-center h-screen p-4 md:p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] overflow-hidden">
       <InfoTracker 
         questionId={questionIdNum} 
         infoTitle={question.info.title} 
