@@ -12,6 +12,7 @@ import Button from '@/components/ui/Button';
 import InfoIllustration from './InfoIllustration';
 import QuizHeader from '../components/QuizHeader';
 import InfoTracker from './InfoTracker';
+import PageLayout from '@/components/layout/PageLayout';
 
 type Props = {
   params: Promise<QuestionPageParams>;
@@ -87,31 +88,33 @@ function getNextPageUrl(questionId: number): string {
 
 function AnimatedFact({ fact, delay }: { fact: InfoData['facts'][0], delay: number }) {
   return (
-    <div 
-      className="flex items-center justify-center gap-4 text-white/90 animate-fade-in bg-white/10 backdrop-blur-sm rounded-xl p-4 mx-4"
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <span 
-        className="text-3xl animate-bounce" 
-        style={{ 
-          animationDelay: `${delay + 200}ms`,
-          animationDuration: '1s',
-          animationIterationCount: '2'
-        }}
+    <div className="flex justify-center w-full">
+      <div 
+        className="inline-flex items-center gap-4 text-white/90 animate-fade-in bg-white/10 backdrop-blur-sm rounded-xl p-4 max-w-fit"
+        style={{ animationDelay: `${delay}ms` }}
       >
-        {fact.icon}
-      </span>
-      <span className="text-base md:text-lg font-medium text-center">
-        {fact.highlight ? (
-          <>
-            {fact.text.split(fact.highlight)[0]}
-            <span className="text-pink-300 font-bold">{fact.highlight}</span>
-            {fact.text.split(fact.highlight)[1]}
-          </>
-        ) : (
-          fact.text
-        )}
-      </span>
+        <span 
+          className="text-3xl animate-bounce flex-shrink-0" 
+          style={{ 
+            animationDelay: `${delay + 200}ms`,
+            animationDuration: '1s',
+            animationIterationCount: '2'
+          }}
+        >
+          {fact.icon}
+        </span>
+        <span className="text-base md:text-lg font-medium text-left">
+          {fact.highlight ? (
+            <>
+              {fact.text.split(fact.highlight)[0]}
+              <span className="text-pink-300 font-bold">{fact.highlight}</span>
+              {fact.text.split(fact.highlight)[1]}
+            </>
+          ) : (
+            fact.text
+          )}
+        </span>
+      </div>
     </div>
   );
 }
@@ -123,7 +126,7 @@ function InfoContent({ question }: { question: QuizQuestion }) {
   if (!infoData) return null;
   
   return (
-    <div className="w-full flex flex-col items-center pt-8 md:pt-12 px-4 max-w-3xl mx-auto">
+    <div className="w-full flex flex-col items-center pt-4 md:pt-12 px-4 max-w-3xl mx-auto">
       {/* Header Image */}
       <InfoIllustration title={question.info.title} />
       
@@ -197,7 +200,7 @@ export default async function InfoPage({ params }: Props) {
   }
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
+    <PageLayout variant="default">
       <InfoTracker 
         questionId={questionIdNum} 
         infoTitle={question.info.title} 
@@ -208,6 +211,6 @@ export default async function InfoPage({ params }: Props) {
       <InfoContent question={question} />
       
       <InfoNavigation questionId={questionIdNum} />
-    </main>
+    </PageLayout>
   );
 } 

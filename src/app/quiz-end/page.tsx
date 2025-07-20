@@ -59,7 +59,6 @@ export default function QuizEndPage() {
         
         <Button
           id="continue-btn"
-          variant="rounded"
           size="lg"
           className="max-w-md mb-2"
           fullWidth

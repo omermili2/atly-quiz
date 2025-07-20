@@ -26,7 +26,7 @@ export default function Button({
   children,
   ...props 
 }: ButtonProps) {
-  const baseClasses = 'text-white font-bold shadow-xl hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-[#ff7eb3] focus:ring-offset-2';
+  const baseClasses = 'text-white font-bold shadow-xl hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-[#ff7eb3]';
   const variantClasses = buttonVariants[variant];
   const sizeClasses = buttonSizes[size];
   const widthClasses = fullWidth ? 'w-full' : '';
