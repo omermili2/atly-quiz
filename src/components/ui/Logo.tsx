@@ -15,7 +15,7 @@ const logoSizes = {
 
 export default function Logo({ size = 'md', className = '' }: LogoProps) {
   const sizeClasses = logoSizes[size];
-  const baseClasses = 'w-auto drop-shadow-2xl rounded-2xl backdrop-blur-lg cursor-pointer hover:scale-105 transition-transform duration-200';
+  const baseClasses = 'w-auto drop-shadow-2xl cursor-pointer hover:scale-105 transition-transform duration-200';
   const allClasses = `${baseClasses} ${sizeClasses} ${className}`.trim();
 
   return (

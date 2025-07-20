@@ -48,7 +48,7 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
     >
       <div className="flex items-center justify-between">
         <p 
-          className={`text-sm md:text-lg font-semibold leading-snug ${
+          className={`text-sm md:text-lg font-semibold leading-snug break-words hyphens-auto pr-2 flex-1 text-left ${
             isSelected ? 'text-white' : 'text-[#2b2e7a]'
           }`}
         >

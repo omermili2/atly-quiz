@@ -47,7 +47,7 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-3 md:gap-6">
+      <div className="grid grid-cols-1 gap-2 md:gap-6">
         {question.answers.map((answer, index) => (
           isMultipleChoice ? (
             <MultipleChoiceCard
@@ -69,7 +69,7 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
       </div>
 
       {isMultipleChoice && (
-        <div className="mt-6 md:mt-8">
+        <div className="mt-4 md:mt-8">
           <div className={`transition-opacity duration-300 ${
             selectedAnswers.length > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}>

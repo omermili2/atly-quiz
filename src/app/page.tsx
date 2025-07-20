@@ -61,9 +61,9 @@ export default function WelcomePage() {
       
       <main className="relative z-20 flex flex-col min-h-screen p-6 text-center text-white">
 
-        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8 mb-6 md:mb-[25px] md:flex-grow md:justify-center">
+        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8 mb-8 md:mb-[25px] md:flex-grow md:justify-center">
           {/* Mobile layout */}
-          <div className="flex flex-row md:hidden items-center gap-2 mb-6">
+          <div className="flex flex-row md:hidden items-center gap-2 mb-4 mt-4">
             <ProofItem icon={<ShieldCheck size={18} />} text="Gluten-Free Guarantee" />
             <ProofItem icon={<Award size={18} />} text="#1 Dietitian's Choice" />
             <ProofItem icon={<Map size={18} />} text="Most Reliable Celiac Map" />
@@ -84,10 +84,10 @@ export default function WelcomePage() {
               <Map size={18} />
             </div>
           </div>
-        </div>  
+        </div>
 
         <section className="flex-grow flex flex-col justify-center items-center">
-          <h2 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg leading-tight -mt-90 md:-mt-50 font-display">
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg leading-tight -mt-16 md:-mt-50 font-display">
             Quickly find safe<br/>gluten-free places
           </h2>
         </section>

@@ -7,10 +7,10 @@ const stepPercents = [0, 10, 35, 60, 72, 85];
 
 const steps = [
   'Analyzing your responses...',
-  'Finding nearby gluten-free places...',
-  'Checking community reviews...',
-  'Personalizing recommendations...',
-  'Validating safety ratings...',
+  'Identifying key challenges...',
+  'Reviewing community recommendations...',
+  'Personalizing your experience...',
+  'Building your gluten-free plan...',
   'Finalizing your profile...',
 ];
 

@@ -59,28 +59,30 @@ export default async function QuestionPage({ params }: Props) {
         isFirstQuestion={questionIdNum === 1}
       />
       
-      <Header logoSize="lg" spacing="md" className="-mt-6 md:-mt-8" />
+      <Header logoSize="lg" spacing="sm" className="mt-2 md:-mt-10 mb-0" />
       
-      <Section maxWidth="2xl" spacing="sm" className="mt-4 md:mt-[30px]">
-        <h1 className="text-xl md:text-4xl font-bold text-white mb-4 md:mb-8 drop-shadow-lg leading-tight">
-          {question.question}
-        </h1>
-        
-        <ProgressBar 
-          progress={progress}
-          backUrl={previousPageUrl}
-          skipUrl={skipUrl}
-          className="mb-4 md:mb-8"
-        />
+      <Section maxWidth="2xl" spacing="sm" className="-mt-2 md:-mt-12 flex-1 flex flex-col justify-center">
+        <div className="space-y-3 md:space-y-6">
+          <h1 className="text-lg md:text-4xl font-bold text-white drop-shadow-lg leading-tight">
+            {question.question}
+          </h1>
+          
+          <ProgressBar 
+            progress={progress}
+            backUrl={previousPageUrl}
+            skipUrl={skipUrl}
+            className=""
+          />
 
-        {isMultipleChoice && (
-          <p className="text-white/80 text-sm mb-3 md:mb-4">Select all that apply</p>
-        )}
+          {isMultipleChoice && (
+            <p className="text-white/80 text-sm">Select all that apply</p>
+          )}
 
-        <QuizAnswers 
-          question={question}
-          isMultipleChoice={isMultipleChoice}
-        />
+          <QuizAnswers 
+            question={question}
+            isMultipleChoice={isMultipleChoice}
+          />
+        </div>
       </Section>
     </PageLayout>
   );
