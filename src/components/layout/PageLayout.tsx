@@ -7,9 +7,9 @@ interface PageLayoutProps {
 }
 
 const layoutVariants = {
-  default: 'flex flex-col items-center min-h-screen p-8 text-center',
-  landing: 'flex flex-col min-h-screen p-6 text-center text-white',
-  centered: 'flex flex-col items-center justify-center min-h-screen px-4 py-8',
+  default: 'flex flex-col items-center min-h-screen p-4 md:p-8 text-center',
+  landing: 'flex flex-col min-h-screen p-4 md:p-6 text-center text-white',
+  centered: 'flex flex-col items-center justify-center min-h-screen px-4 py-6 md:py-8',
 };
 
 export default function PageLayout({ 

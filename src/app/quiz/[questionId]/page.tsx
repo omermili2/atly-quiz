@@ -59,10 +59,10 @@ export default async function QuestionPage({ params }: Props) {
         isFirstQuestion={questionIdNum === 1}
       />
       
-      <Header logoSize="xl" spacing="lg" className="-mt-8" />
+      <Header logoSize="lg" spacing="md" className="-mt-6 md:-mt-8" />
       
-      <Section maxWidth="2xl" spacing="md" className="mt-[30px]">
-        <h1 className="text-2xl md:text-4xl font-bold text-white mb-8 drop-shadow-lg">
+      <Section maxWidth="2xl" spacing="sm" className="mt-4 md:mt-[30px]">
+        <h1 className="text-xl md:text-4xl font-bold text-white mb-4 md:mb-8 drop-shadow-lg leading-tight">
           {question.question}
         </h1>
         
@@ -70,10 +70,11 @@ export default async function QuestionPage({ params }: Props) {
           progress={progress}
           backUrl={previousPageUrl}
           skipUrl={skipUrl}
+          className="mb-4 md:mb-8"
         />
 
         {isMultipleChoice && (
-          <p className="text-white/80 text-sm mb-4">Select all that apply</p>
+          <p className="text-white/80 text-sm mb-3 md:mb-4">Select all that apply</p>
         )}
 
         <QuizAnswers 

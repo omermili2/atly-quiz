@@ -2,39 +2,34 @@ import React from 'react';
 
 interface SectionProps {
   children: React.ReactNode;
+  maxWidth?: 'xl' | '2xl' | '4xl' | '6xl' | 'full';
+  spacing?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
-  spacing?: 'none' | 'sm' | 'md' | 'lg';
 }
-
-const maxWidthClasses = {
-  sm: 'max-w-sm',
-  md: 'max-w-md', 
-  lg: 'max-w-lg',
-  xl: 'max-w-xl',
-  '2xl': 'max-w-2xl',
-  '3xl': 'max-w-3xl',
-};
-
-const spacingClasses = {
-  none: '',
-  sm: 'mt-4',
-  md: 'mt-8',
-  lg: 'mt-12',
-};
 
 export default function Section({ 
   children, 
-  className = '', 
-  maxWidth = '2xl',
-  spacing = 'md'
+  maxWidth = '4xl', 
+  spacing = 'md',
+  className = '' 
 }: SectionProps) {
-  const maxWidthClass = maxWidthClasses[maxWidth];
-  const spacingClass = spacingClasses[spacing];
-  const allClasses = `w-full ${maxWidthClass} ${spacingClass} ${className}`.trim();
+  const maxWidthClasses = {
+    'xl': 'max-w-xl',
+    '2xl': 'max-w-2xl', 
+    '4xl': 'max-w-4xl',
+    '6xl': 'max-w-6xl',
+    'full': 'max-w-full'
+  };
+
+  const spacingClasses = {
+    'sm': 'px-4 md:px-6',
+    'md': 'px-4 md:px-8', 
+    'lg': 'px-6 md:px-12',
+    'xl': 'px-6 md:px-16'
+  };
 
   return (
-    <div className={allClasses}>
+    <div className={`w-full ${maxWidthClasses[maxWidth]} mx-auto ${spacingClasses[spacing]} ${className}`}>
       {children}
     </div>
   );

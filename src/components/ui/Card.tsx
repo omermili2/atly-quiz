@@ -25,7 +25,7 @@ export default function Card({
   ariaChecked,
   ariaLabel,
 }: CardProps) {
-  const baseClasses = 'w-full p-4 rounded-2xl cursor-pointer transition-all duration-300';
+  const baseClasses = 'w-full p-3 md:p-4 rounded-xl md:rounded-2xl cursor-pointer transition-all duration-300';
   const stateClasses = isSelected 
     ? 'bg-gradient-to-r from-[#ff7eb3] to-[#ff758c] text-white shadow-lg' 
     : 'bg-white/95 hover:bg-white border border-white/50 hover:border-[#ff7eb3]/50 shadow-md hover:shadow-xl';

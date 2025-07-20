@@ -48,7 +48,7 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
     >
       <div className="flex items-center justify-between">
         <p 
-          className={`text-base md:text-lg font-semibold ${
+          className={`text-sm md:text-lg font-semibold leading-snug ${
             isSelected ? 'text-white' : 'text-[#2b2e7a]'
           }`}
         >
@@ -56,7 +56,7 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
         </p>
         <div
           className={`
-            rounded-full h-6 w-6 flex items-center justify-center transition-all duration-300
+            rounded-full h-5 w-5 md:h-6 md:w-6 flex items-center justify-center transition-all duration-300 ml-3 flex-shrink-0
             ${isSelected 
               ? 'bg-white/25' 
               : 'border-2 border-gray-300'
@@ -64,7 +64,7 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
           `}
           aria-hidden="true"
         >
-          {isSelected && <Check size={16} className="text-white" />}
+          {isSelected && <Check size={14} className="text-white md:w-4 md:h-4" />}
         </div>
       </div>
     </Card>

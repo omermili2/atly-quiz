@@ -62,17 +62,17 @@ export default function AnswerCard({ questionId, answer }: Props) {
       ariaPressed={isSelected}
     >
       <div className="flex items-center justify-between">
-        <p className={`text-base md:text-lg font-semibold ${
+        <p className={`text-sm md:text-lg font-semibold leading-snug ${
           isSelected ? 'text-white' : 'text-[#2b2e7a]'
         }`}>
           {answer}
         </p>
         {isSelected && (
           <div
-            className="bg-white/25 rounded-full h-6 w-6 flex items-center justify-center transition-all duration-300"
+            className="bg-white/25 rounded-full h-5 w-5 md:h-6 md:w-6 flex items-center justify-center transition-all duration-300 ml-3 flex-shrink-0"
             aria-hidden="true"
           >
-            <Check size={16} className="text-white" />
+            <Check size={14} className="text-white md:w-4 md:h-4" />
           </div>
         )}
       </div>
