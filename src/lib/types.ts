@@ -36,20 +36,15 @@ export type AnalyticsEventType =
   | 'Error Occurred'
   | 'User Segment Identified';
 
-
 export type PlanType = 'annual' | 'monthly';
 
 export type LandingPageAction = 'testimonial_viewed' | 'continue_clicked' | 'logo_clicked';
 
 export type QuizAnswer = string | string[];
 
-export interface QuizAnswers {
-  [questionId: number]: QuizAnswer;
-}
-
 export interface BaseEventProperties {
-  session_id: string;
-  timestamp: string;
+  session_id?: string;
+  timestamp?: string;
 }
 
 export interface PageViewProperties extends BaseEventProperties {
@@ -101,7 +96,6 @@ export interface AnalyticsProperties extends BaseEventProperties {
   questions_answered?: number;
   questions_skipped?: number;
   completion_rate?: number;
-  all_answers?: QuizAnswers;
   
   // Error properties
   error_message?: string;
@@ -117,7 +111,7 @@ export interface AnalyticsProperties extends BaseEventProperties {
   info_title?: string;
   
   // Generic properties for extensibility
-  [key: string]: string | number | boolean | QuizAnswers | QuizAnswer | undefined;
+  [key: string]: string | number | boolean | QuizAnswer | undefined;
 }
 
 export interface UserProperties {
@@ -143,21 +137,6 @@ export interface UserProperties {
   pricing_page_views?: number;
 }
 
-
-export interface BaseComponentProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export interface SelectableItemProps extends BaseComponentProps {
-  isSelected?: boolean;
-  onClick?: () => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
-  'aria-label'?: string;
-  'aria-pressed'?: boolean;
-  'aria-checked'?: boolean;
-}
-
 export interface QuestionPageParams {
   questionId: string;
 }
@@ -167,11 +146,6 @@ export interface ApiResponse<T = unknown> {
   data?: T;
   error?: string;
   message?: string;
-}
-
-export interface StorageResult {
-  success: boolean;
-  error?: string;
 }
 
 export interface Testimonial {

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { type QuizQuestion, getTotalQuestions } from '@/lib/questions';
 import { ROUTES } from '@/lib/constants';
-import { saveMultipleAnswers } from '@/lib/storage';
 import Button from '@/components/ui/Button';
 import AnswerCard from './AnswerCard';
 import MultipleChoiceCard from './MultipleChoiceCard';
@@ -25,7 +24,6 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
       : selectedAnswers.filter(a => a !== answer);
     
     setSelectedAnswers(newSelectedAnswers);
-    saveMultipleAnswers(question.id, newSelectedAnswers);
   };
 
   const handleSingleAnswerSelection = () => {
@@ -47,7 +45,7 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 gap-6 md:gap-6">
         {question.answers.map((answer, index) => (
           isMultipleChoice ? (
             <MultipleChoiceCard

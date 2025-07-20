@@ -1,8 +1,7 @@
 import mixpanel from 'mixpanel-browser';
 import { getTotalQuestions } from './questions';
-import { getQuizAnswers as getStoredQuizAnswers, getAnalyticsUserId, getFirstVisit } from './storage';
+import { getAnalyticsUserId, getFirstVisit } from './storage';
 import type { 
-  QuizAnswers, 
   UserProperties, 
   UserSegment, 
   PrimaryMotivation, 
@@ -33,46 +32,58 @@ class AnalyticsService {
   }
 
   private generateSessionId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  }
-
-  private getQuizAnswers(): QuizAnswers {
-    return getStoredQuizAnswers();
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
   private getTimeSpent(): number {
-    return this.startTime ? Date.now() - this.startTime : 0;
+    if (!this.startTime) return 0;
+    return Math.round((Date.now() - this.startTime) / 1000);
   }
 
   private getQuestionTimeSpent(): number {
-    return this.questionStartTime ? Date.now() - this.questionStartTime : 0;
+    if (!this.questionStartTime) return 0;
+    return Math.round((Date.now() - this.questionStartTime) / 1000);
   }
 
-  private track(event: AnalyticsEventType, properties?: AnalyticsProperties): void {
+  private track(eventName: AnalyticsEventType, properties?: AnalyticsProperties): void {
     if (typeof window === 'undefined') return;
-    mixpanel.track(event, properties);
+
+    try {
+      const baseProperties = {
+        session_id: this.sessionId,
+        timestamp: new Date().toISOString(),
+        ...properties,
+      };
+
+      mixpanel.track(eventName, baseProperties);
+    } catch (error) {
+      console.error('Analytics tracking error:', error);
+    }
   }
 
-  identifyUser(): void {
-    if (typeof window === 'undefined') return;
+  private identifyUser(): void {
+    try {
+      const userId = getAnalyticsUserId();
+      const firstVisit = getFirstVisit();
+      
+      mixpanel.identify(userId);
+      
+      const userProperties: UserProperties = {
+        first_visit: firstVisit,
+        last_active: new Date().toISOString(),
+        user_agent: typeof window !== 'undefined' ? window.navigator.userAgent : '',
+        referrer: typeof window !== 'undefined' ? document.referrer : '',
+      };
 
-    const userId = getAnalyticsUserId();
-    const now = new Date().toISOString();
-    const firstVisit = getFirstVisit();
-    
-    // Set user properties
-    const properties: UserProperties = {
-      first_visit: firstVisit,
-      last_active: now,
-      user_agent: navigator.userAgent,
-      referrer: document.referrer || 'direct',
-      utm_source: new URLSearchParams(window.location.search).get('utm_source') || undefined,
-      utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || undefined,
-      utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || undefined,
-    };
+      const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+      if (urlParams.get('utm_source')) userProperties.utm_source = urlParams.get('utm_source')!;
+      if (urlParams.get('utm_medium')) userProperties.utm_medium = urlParams.get('utm_medium')!;
+      if (urlParams.get('utm_campaign')) userProperties.utm_campaign = urlParams.get('utm_campaign')!;
 
-    mixpanel.identify(userId);
-    mixpanel.people.set(properties);
+      mixpanel.people.set(userProperties);
+    } catch (error) {
+      console.error('Failed to identify user:', error);
+    }
   }
 
   trackPageView(page: string, properties?: Record<string, string | number | boolean>): void {
@@ -105,24 +116,20 @@ class AnalyticsService {
   trackLandingPageEngagement(action: LandingPageAction): void {
     this.track('Landing Page Interaction', {
       action,
-      session_id: this.sessionId,
       time_on_page: this.getTimeSpent(),
+      session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
   }
 
   trackQuizStarted(): void {
-    this.trackPageView('Quiz Started');
-    
     this.track('Quiz Started', {
       session_id: this.sessionId,
-      time_to_start: this.getTimeSpent(),
       timestamp: new Date().toISOString(),
     });
 
     mixpanel.people.set({
       quiz_started: true,
-      quiz_start_date: new Date().toISOString(),
     });
   }
 
@@ -139,14 +146,12 @@ class AnalyticsService {
       question_text: questionText,
       question_type: questionType,
       session_id: this.sessionId,
-      answers_so_far: Object.keys(this.getQuizAnswers()).length,
       timestamp: new Date().toISOString(),
     });
   }
 
   trackAnswerSelected(questionId: number, answer: QuizAnswer, questionType: 'single' | 'multiple'): void {
     const timeSpent = this.getQuestionTimeSpent();
-    const answers = this.getQuizAnswers();
     
     this.track('Answer Selected', {
       question_id: questionId,
@@ -155,35 +160,33 @@ class AnalyticsService {
       answer: answer,
       time_spent_on_question: timeSpent,
       session_id: this.sessionId,
-      total_answers: Object.keys(answers).length + 1,
       timestamp: new Date().toISOString(),
     });
 
-    const answerKey = `question_${questionId}_answer` as const;
     mixpanel.people.set({
-      [answerKey]: answer,
-      total_questions_answered: Object.keys(answers).length + 1,
+      [`question_${questionId}_answer`]: answer,
       last_question_answered: questionId,
     });
   }
 
-  trackQuestionSkipped(questionId: number, questionText: string): void {
+  trackQuestionSkipped(questionId: number, reason: string = 'user_skipped'): void {
     const timeSpent = this.getQuestionTimeSpent();
     
     this.track('Question Skipped', {
       question_id: questionId,
-      question_text: questionText,
-      question_type: 'single',
+      reason,
       time_spent_on_question: timeSpent,
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
+
+    mixpanel.people.increment('questions_skipped');
   }
 
-  trackBackNavigation(fromQuestionId: number, toQuestionId: number): void {
+  trackBackNavigation(fromQuestion: number, toQuestion: number): void {
     this.track('Back Navigation', {
-      from_question: fromQuestionId,
-      to_question: toQuestionId,
+      from_question: fromQuestion,
+      to_question: toQuestion,
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
@@ -206,20 +209,12 @@ class AnalyticsService {
 
   trackQuizCompleted(): void {
     const totalTime = this.getTimeSpent();
-    const answers = this.getQuizAnswers();
-    const completedCount = Object.keys(answers).length;
     const totalQuestions = getTotalQuestions();
-    const skippedCount = totalQuestions - completedCount;
-    
-    this.trackPageView('Quiz Completed');
     
     this.track('Quiz Completed', {
+      total_funnel_time: totalTime,
+      total_questions: totalQuestions,
       session_id: this.sessionId,
-      total_time_spent: totalTime,
-      questions_answered: completedCount,
-      questions_skipped: skippedCount,
-      completion_rate: completedCount > 0 ? (completedCount / totalQuestions) * 100 : 0,
-      all_answers: answers,
       timestamp: new Date().toISOString(),
     });
 
@@ -227,12 +222,13 @@ class AnalyticsService {
       quiz_completed: true,
       quiz_completion_date: new Date().toISOString(),
       time_to_complete_quiz: totalTime,
-      final_completion_rate: completedCount > 0 ? (completedCount / totalQuestions) * 100 : 0,
     });
+
+    mixpanel.people.increment('quiz_completions');
   }
 
   trackAnalysisStarted(): void {
-    this.trackPageView('Analysis Started');
+    this.trackPageView('Analysis Page');
     
     this.track('Analysis Started', {
       session_id: this.sessionId,
@@ -241,14 +237,12 @@ class AnalyticsService {
   }
 
   trackAnalysisProgress(percentage: number, currentStep: string): void {
-    if (percentage % 25 === 0 || percentage === 100) {
-      this.track('Analysis Progress', {
-        percentage,
-        current_step: currentStep,
-        session_id: this.sessionId,
-        timestamp: new Date().toISOString(),
-      });
-    }
+    this.track('Analysis Progress', {
+      percentage,
+      current_step: currentStep,
+      session_id: this.sessionId,
+      timestamp: new Date().toISOString(),
+    });
   }
 
   trackPricingPageViewed(): void {
@@ -273,6 +267,10 @@ class AnalyticsService {
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
+
+    mixpanel.people.set({
+      selected_plan: planType,
+    });
   }
 
   trackCheckoutStarted(planType: PlanType, planPrice: number): void {
@@ -283,23 +281,27 @@ class AnalyticsService {
       total_funnel_time: this.getTimeSpent(),
       timestamp: new Date().toISOString(),
     });
+
+    mixpanel.people.set({
+      checkout_started: true,
+    });
   }
 
-  trackDropoff(page: string, reason?: string): void {
+  trackUserDropoff(page: string, reason: string = 'unknown'): void {
+    const timeSpent = this.getTimeSpent();
+    
     this.track('User Dropped Off', {
       page,
       reason,
+      time_spent_before_dropout: timeSpent,
       session_id: this.sessionId,
-      time_spent_before_dropout: this.getTimeSpent(),
-      answers_collected: Object.keys(this.getQuizAnswers()).length,
       timestamp: new Date().toISOString(),
     });
   }
 
-  trackError(error: Error, context: string): void {
+  trackError(errorMessage: string, context: string = ''): void {
     this.track('Error Occurred', {
-      error_message: error.message,
-      error_stack: error.stack,
+      error_message: errorMessage,
       context,
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
@@ -307,47 +309,16 @@ class AnalyticsService {
   }
 
   trackUserSegment(): void {
-    const answers = this.getQuizAnswers();
+    // Simplified user segmentation without localStorage dependency
+    // User segments are now primarily determined by Mixpanel's people properties
+    // which are set when answers are selected
     
-    let userSegment: UserSegment = 'unknown';
-    let primaryMotivation: PrimaryMotivation = 'unknown';
-    
-    if (answers[1]) {
-      const motivation = Array.isArray(answers[1]) ? answers[1][0] : answers[1];
-      if (motivation.includes('Celiac')) {
-        userSegment = 'celiac_diagnosed';
-        primaryMotivation = 'medical_necessity';
-      } else if (motivation.includes('sensitivity')) {
-        userSegment = 'gluten_sensitive';
-        primaryMotivation = 'health_conscious';
-      } else if (motivation.includes('wellness')) {
-        userSegment = 'wellness_focused';
-        primaryMotivation = 'lifestyle_choice';
-      } else if (motivation.includes('athlete')) {
-        userSegment = 'performance_athlete';
-        primaryMotivation = 'performance_optimization';
-      } else if (motivation.includes('support')) {
-        userSegment = 'supporting_family';
-        primaryMotivation = 'family_support';
-      }
-    }
-
-    mixpanel.people.set({
-      user_segment: userSegment,
-      primary_motivation: primaryMotivation,
-    });
-
     this.track('User Segment Identified', {
-      user_segment: userSegment,
-      primary_motivation: primaryMotivation,
       session_id: this.sessionId,
       timestamp: new Date().toISOString(),
     });
   }
 }
 
-export const analytics = new AnalyticsService();
-export const track = analytics.trackPageView.bind(analytics);
-export const identify = analytics.identifyUser.bind(analytics);
-
+const analytics = new AnalyticsService();
 export default analytics; 

@@ -136,7 +136,7 @@ function InfoContent({ question }: { question: QuizQuestion }) {
       </p>
       
       {/* Facts Container */}
-      <div className="w-full space-y-2 md:space-y-6 max-w-2xl">
+      <div className="w-full space-y-4 md:space-y-6 max-w-2xl">
         {infoData.facts.map((fact, index) => (
           <AnimatedFact 
             key={index} 

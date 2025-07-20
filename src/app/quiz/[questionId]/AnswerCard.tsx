@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Check } from 'lucide-react';
 import { getQuestionById, getTotalQuestions } from '@/lib/questions';
 import { ROUTES, SELECTION_DELAY } from '@/lib/constants';
-import { saveSingleAnswer } from '@/lib/storage';
 import Card from '@/components/ui/Card';
 import analytics from '@/lib/analytics';
 
@@ -41,8 +40,6 @@ export default function AnswerCard({ questionId, answer, disabled = false, onSel
     onSelect?.();
     
     analytics.trackAnswerSelected(questionId, answer, 'single');
-    
-    saveSingleAnswer(questionId, answer);
     
     setTimeout(() => {
       const nextRoute = getNextRoute(questionId);
