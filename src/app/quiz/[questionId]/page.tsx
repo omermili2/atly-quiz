@@ -71,6 +71,7 @@ export default function QuestionPage() {
             backUrl={previousPageUrl}
             skipUrl={skipUrl}
             questionId={questionIdNum}
+            questionText={question.question}
             className=""
           />
 

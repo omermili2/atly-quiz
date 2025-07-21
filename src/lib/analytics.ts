@@ -19,6 +19,9 @@ if (typeof window !== 'undefined') {
 type PageEvent = 'Landing Page' | 'Quiz Question' | 'Quiz Info' | 'Quiz End' | 'Analysis' | 'Pricing';
 type ActionEvent = 'continue' | 'back' | 'skip';
 
+// Analytics properties type
+type AnalyticsProperties = Record<string, string | number | boolean | string[] | QuizAnswer[] | null>;
+
 class AnalyticsService {
   private sessionId: string;
 
@@ -31,7 +34,7 @@ class AnalyticsService {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  private track(eventName: string, properties?: Record<string, any>): void {
+  private track(eventName: string, properties?: AnalyticsProperties): void {
     if (typeof window === 'undefined') return;
 
     try {
@@ -57,28 +60,31 @@ class AnalyticsService {
   }
 
   // 1. PAGE VISITS - Track funnel progression
-  trackPageVisit(page: PageEvent, questionId?: number): void {
+  trackPageVisit(page: PageEvent, questionId?: number, questionText?: string): void {
     this.track('Page Visit', {
       page,
       question_id: questionId || null,
+      question_text: questionText || null,
       url: typeof window !== 'undefined' ? window.location.pathname : null,
     });
   }
 
   // 2. ACTIONS - Track user interactions
-  trackAction(action: ActionEvent, context?: { questionId?: number; fromPage?: string; toPage?: string }): void {
+  trackAction(action: ActionEvent, context?: { questionId?: number; questionText?: string; fromPage?: string; toPage?: string }): void {
     this.track('User Action', {
       action,
       question_id: context?.questionId || null,
+      question_text: context?.questionText || null,
       from_page: context?.fromPage || null,
       to_page: context?.toPage || null,
     });
   }
 
   // 3. ANSWERS - Track what users selected
-  trackAnswer(questionId: number, answer: QuizAnswer | QuizAnswer[], questionType: 'single' | 'multiple'): void {
+  trackAnswer(questionId: number, answer: QuizAnswer | QuizAnswer[], questionType: 'single' | 'multiple', questionText?: string): void {
     this.track('Answer Selected', {
       question_id: questionId,
+      question_text: questionText || null,
       answer: Array.isArray(answer) ? answer : [answer],
       question_type: questionType,
     });
@@ -86,6 +92,7 @@ class AnalyticsService {
     // Store in user profile for funnel analysis
     mixpanel.people.set({
       [`question_${questionId}_answer`]: Array.isArray(answer) ? answer.join(', ') : answer,
+      [`question_${questionId}_text`]: questionText || '',
     });
   }
 
@@ -127,12 +134,12 @@ class AnalyticsService {
     this.trackPageVisit('Landing Page');
   }
 
-  trackQuestionViewed(questionId: number): void {
-    this.trackPageVisit('Quiz Question', questionId);
+  trackQuestionViewed(questionId: number, questionText: string): void {
+    this.trackPageVisit('Quiz Question', questionId, questionText);
   }
 
-  trackInfoPageViewed(questionId: number): void {
-    this.trackPageVisit('Quiz Info', questionId);
+  trackInfoPageViewed(questionId: number, infoTitle: string): void {
+    this.trackPageVisit('Quiz Info', questionId, infoTitle);
   }
 
   trackQuizEndViewed(): void {
@@ -148,16 +155,16 @@ class AnalyticsService {
   }
 
   // Convenience methods for common actions
-  trackContinueClick(questionId?: number): void {
-    this.trackAction('continue', { questionId });
+  trackContinueClick(questionId?: number, questionText?: string): void {
+    this.trackAction('continue', { questionId, questionText });
   }
 
-  trackBackClick(questionId?: number): void {
-    this.trackAction('back', { questionId });
+  trackBackClick(questionId?: number, questionText?: string): void {
+    this.trackAction('back', { questionId, questionText });
   }
 
-  trackSkipClick(questionId?: number): void {
-    this.trackAction('skip', { questionId });
+  trackSkipClick(questionId?: number, questionText?: string): void {
+    this.trackAction('skip', { questionId, questionText });
   }
 }
 

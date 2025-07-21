@@ -10,10 +10,10 @@ interface Props {
   isFirstQuestion: boolean;
 }
 
-export default function QuestionTracker({ questionId, questionText, questionType, isFirstQuestion }: Props): React.JSX.Element | null {
+export default function QuestionTracker(props: Props): React.JSX.Element | null {
   useEffect(() => {
-    analytics.trackQuestionViewed(questionId);
-  }, [questionId]);
+    analytics.trackQuestionViewed(props.questionId, props.questionText);
+  }, [props.questionId, props.questionText]);
 
   return null;
 } 

@@ -27,12 +27,6 @@ export default function PricingPage() {
     // Add your checkout logic here
   };
 
-  const handleTrialStart = () => {
-    // This should be called when user actually submits the form with credit card details
-    analytics.trackTrialStart(selectedPlan);
-    // Add your trial start logic here
-  };
-
   const formatCardNumber = (value: string) => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     const matches = v.match(/\d{4,16}/g);

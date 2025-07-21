@@ -9,7 +9,7 @@ import {
   getTotalQuestions,
   type QuizQuestion 
 } from '@/lib/questions';
-import { COMPOUND_STYLES, COLORS, TYPOGRAPHY, LAYOUT, COMPONENTS, RESPONSIVE } from '@/lib/design';
+import { COMPOUND_STYLES, COLORS, TYPOGRAPHY, LAYOUT, COMPONENTS } from '@/lib/design';
 import Button from '@/components/ui/Button';
 import InfoIllustration from './InfoIllustration';
 import QuizHeader from '../components/QuizHeader';

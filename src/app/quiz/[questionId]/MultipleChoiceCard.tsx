@@ -8,11 +8,12 @@ import analytics from '@/lib/analytics';
 
 type Props = {
   questionId: number;
+  questionText: string;
   answer: string;
   onSelectionChange: (answer: string, isSelected: boolean) => void;
 };
 
-export default function MultipleChoiceCard({ questionId, answer, onSelectionChange }: Props) {
+export default function MultipleChoiceCard({ questionId, questionText, answer, onSelectionChange }: Props) {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleSelect = () => {
@@ -20,7 +21,7 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
     setIsSelected(newSelectedState);
     
     if (newSelectedState) {
-      analytics.trackAnswer(questionId, answer, 'multiple');
+      analytics.trackAnswer(questionId, answer, 'multiple', questionText);
     }
     
     try {

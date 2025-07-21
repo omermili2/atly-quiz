@@ -8,6 +8,7 @@ interface ProgressBarProps {
   skipUrl?: string;
   className?: string;
   questionId?: number;
+  questionText?: string;
 }
 
 export default function ProgressBar({ 
@@ -15,15 +16,16 @@ export default function ProgressBar({
   backUrl, 
   skipUrl, 
   className = '',
-  questionId
+  questionId,
+  questionText
 }: ProgressBarProps) {
   
   const handleBackClick = () => {
-    analytics.trackBackClick(questionId);
+    analytics.trackBackClick(questionId, questionText);
   };
 
   const handleSkipClick = () => {
-    analytics.trackSkipClick(questionId);
+    analytics.trackSkipClick(questionId, questionText);
   };
 
   return (

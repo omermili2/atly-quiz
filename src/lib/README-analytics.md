@@ -11,8 +11,8 @@ Track where users are in the funnel and identify drop-off points.
 
 **Pages tracked:**
 - `Landing Page` - Entry point
-- `Quiz Question` - Each question page (includes `question_id`)
-- `Quiz Info` - Info pages between questions (includes `question_id`)
+- `Quiz Question` - Each question page (includes `question_id` and `question_text`)
+- `Quiz Info` - Info pages between questions (includes `question_id` and `question_text`)
 - `Quiz End` - Quiz completion page
 - `Analysis` - Loading/analysis page
 - `Pricing` - Pricing selection page
@@ -20,8 +20,8 @@ Track where users are in the funnel and identify drop-off points.
 **Usage:**
 ```typescript
 analytics.trackLandingPageLoad();
-analytics.trackQuestionViewed(questionId);
-analytics.trackInfoPageViewed(questionId);
+analytics.trackQuestionViewed(questionId, questionText);
+analytics.trackInfoPageViewed(questionId, infoTitle);
 analytics.trackQuizEndViewed();
 analytics.trackAnalysisPageViewed();
 analytics.trackPricingPageViewed();
@@ -40,14 +40,15 @@ Track user interactions to understand engagement patterns.
 **Properties:**
 - `action` - The action type
 - `question_id` - Which question (if applicable)
+- `question_text` - The actual question text (if applicable)
 - `from_page` - Source page (if applicable)
 - `to_page` - Destination page (if applicable)
 
 **Usage:**
 ```typescript
-analytics.trackContinueClick(questionId);
-analytics.trackBackClick(questionId);
-analytics.trackSkipClick(questionId);
+analytics.trackContinueClick(questionId, questionText);
+analytics.trackBackClick(questionId, questionText);
+analytics.trackSkipClick(questionId, questionText);
 ```
 
 ### 3. Answer Selection
@@ -57,19 +58,22 @@ Track what users answer to understand user segments and preferences.
 
 **Properties:**
 - `question_id` - Which question number
+- `question_text` - The actual question text
 - `answer` - Array of selected answers (even for single choice)
 - `question_type` - `'single'` or `'multiple'`
 
 **User Profile Storage:**
-Answers are stored in user profiles as `question_1_answer`, `question_2_answer`, etc.
+Answers are stored in user profiles as:
+- `question_1_answer`, `question_2_answer`, etc. - The selected answers
+- `question_1_text`, `question_2_text`, etc. - The question text for easy reference
 
 **Usage:**
 ```typescript
 // Single choice
-analytics.trackAnswer(1, "I have a Celiac disease diagnosis", 'single');
+analytics.trackAnswer(1, "I have a Celiac disease diagnosis", 'single', "What's your main reason for eating gluten-free?");
 
 // Multiple choice (handled automatically)
-analytics.trackAnswer(2, ["Staff knowledge", "Reviews from people"], 'multiple');
+analytics.trackAnswer(2, ["Staff knowledge", "Reviews from people"], 'multiple', "When choosing a place, what matters most to you?");
 ```
 
 ### 4. Conversion Tracking
@@ -102,9 +106,9 @@ analytics.trackTrialStart('annual'); // This is the conversion event!
 ### Auto-tracked Events
 These events are automatically tracked by components:
 
-- **Page visits** - Tracked by page components on mount
-- **Question answers** - Tracked by AnswerCard/MultipleChoiceCard on selection
-- **Back/Skip actions** - Tracked by ProgressBar on click
+- **Page visits** - Tracked by page components on mount (includes question text)
+- **Question answers** - Tracked by AnswerCard/MultipleChoiceCard on selection (includes question text)
+- **Back/Skip actions** - Tracked by ProgressBar on click (includes question text)
 
 ### Manual Tracking Required
 These events need to be manually added:
@@ -113,33 +117,60 @@ These events need to be manually added:
 - **Plan selection** - Add to plan option clicks
 - **Trial start** - Add to final form submission
 
+## Mixpanel Dashboard Benefits
+
+### Enhanced Filtering
+With question text included, you can now:
+
+1. **Filter by Question Text**: Instead of remembering that "Question 1" is about motivation, you can filter by "What's your main reason for eating gluten-free?"
+
+2. **Create Meaningful Cohorts**: 
+   - Users who answered "I have a Celiac disease diagnosis" 
+   - Users who skipped "When choosing a place, what matters most to you?"
+
+3. **Better Dashboard Readability**: Charts show actual question text instead of just question IDs
+
+### Improved Analytics Workflow
+- **Easier Analysis**: No need to cross-reference question IDs with question text
+- **Better Collaboration**: Non-technical team members can understand reports without a reference sheet
+- **Faster Insights**: Question text appears directly in Mixpanel filters and breakdowns
+
 ## Funnel Analysis
 
 With this simplified tracking, you can analyze:
 
-1. **Drop-off rates** between pages
-2. **Question completion rates** by question ID
-3. **Most popular answers** by question
+1. **Drop-off rates** between pages (now with question text for context)
+2. **Question completion rates** by question text (more readable)
+3. **Most popular answers** by question (with full question context)
 4. **Conversion rates** by plan type
-5. **User journey patterns** (back/skip behavior)
+5. **User journey patterns** (back/skip behavior with question context)
 
 ## Data Points for Dashboards
 
 ### Funnel Metrics
 - Landing Page → Quiz Start rate
-- Question completion rate by question ID
+- Question completion rate by question text (not just ID)
 - Quiz End → Pricing rate  
 - Pricing → Checkout rate
 - Checkout → Trial Start rate (conversion)
 
 ### User Behavior
-- Most skipped questions
-- Most common back navigation patterns
-- Answer distribution by question
+- Most skipped questions (with question text visible)
+- Most common back navigation patterns (with question context)
+- Answer distribution by question (readable question text)
 - Plan selection preferences
 
 ### Conversion Analysis
 - Time from landing to conversion
-- Answer patterns of converted users
+- Answer patterns of converted users (with readable question text)
 - Plan type performance
-- Drop-off analysis by funnel stage 
+- Drop-off analysis by funnel stage
+
+## Example Mixpanel Filters
+
+Now you can create filters like:
+- `question_text contains "gluten-free"`
+- `question_text = "What's your main reason for eating gluten-free?"`
+- `answer contains "Celiac"`
+
+This makes your analytics much more user-friendly and reduces the need to maintain separate question ID reference sheets! 

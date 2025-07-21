@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getQuestionById, getTotalQuestions, type QuizQuestion } from '@/lib/questions';
+import { getTotalQuestions, type QuizQuestion } from '@/lib/questions';
 import { ROUTES } from '@/lib/routes';
 import Button from '@/components/ui/Button';
 import AnswerCard from './AnswerCard';
 import MultipleChoiceCard from './MultipleChoiceCard';
-import analytics from '@/lib/analytics';
 
 type Props = {
   question: QuizQuestion;
@@ -52,6 +51,7 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
             <MultipleChoiceCard
               key={index}
               questionId={question.id}
+              questionText={question.question}
               answer={answer}
               onSelectionChange={handleMultipleChoiceChange}
             />
@@ -59,6 +59,7 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
             <AnswerCard
               key={index}
               questionId={question.id}
+              questionText={question.question}
               answer={answer}
               disabled={isAnswerSelected}
               onSelect={handleSingleAnswerSelection}

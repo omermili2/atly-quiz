@@ -13,6 +13,7 @@ const SELECTION_DELAY = 200;
 
 type Props = {
   questionId: number;
+  questionText: string;
   answer: string;
   disabled?: boolean;
   onSelect?: () => void;
@@ -32,7 +33,7 @@ function getNextRoute(questionId: number): string {
     : ROUTES.QUIZ_END;
 }
 
-export default function AnswerCard({ questionId, answer, disabled = false, onSelect }: Props) {
+export default function AnswerCard({ questionId, questionText, answer, disabled = false, onSelect }: Props) {
   const router = useRouter();
   const [isSelected, setIsSelected] = useState(false);
 
@@ -42,7 +43,7 @@ export default function AnswerCard({ questionId, answer, disabled = false, onSel
     setIsSelected(true);
     onSelect?.();
     
-    analytics.trackAnswer(questionId, answer, 'single');
+    analytics.trackAnswer(questionId, answer, 'single', questionText);
     
     setTimeout(() => {
       const nextRoute = getNextRoute(questionId);
