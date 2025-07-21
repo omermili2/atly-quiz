@@ -4,9 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Check } from 'lucide-react';
 import { getQuestionById, getTotalQuestions } from '@/lib/questions';
-import { ROUTES, SELECTION_DELAY } from '@/lib/constants';
+import { ROUTES } from '@/lib/routes';
 import Card from '@/components/ui/Card';
 import analytics from '@/lib/analytics';
+
+const SELECTION_DELAY = 200;
 
 type Props = {
   questionId: number;

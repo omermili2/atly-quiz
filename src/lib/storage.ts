@@ -1,5 +1,10 @@
-import { STORAGE_KEYS } from './constants';
 import type { QuizAnswer } from './types';
+
+const STORAGE_KEYS = {
+  ANALYTICS_USER_ID: 'analytics_user_id',
+  FIRST_VISIT: 'first_visit',
+  USER_SEGMENT_ANSWER: 'user_segment_answer',
+} as const;
 
 function getStorageItem(key: string, defaultValue: string = ''): string {
   if (typeof window === 'undefined') return defaultValue;

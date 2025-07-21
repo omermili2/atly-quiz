@@ -2,11 +2,13 @@
 import Link from 'next/link';
 import { ShieldCheck, Award, Map } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { TESTIMONIAL_ANIMATION_DELAY, TESTIMONIAL_STAGGER_DELAY } from '@/lib/constants';
 import Button from '@/components/ui/Button';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import type { Testimonial, LandingPageAction } from '@/lib/types';
 import analytics from '@/lib/analytics';
+
+const TESTIMONIAL_ANIMATION_DELAY = 50;
+const TESTIMONIAL_STAGGER_DELAY = 100;
 
 function ProofItem({ icon, text }: { icon: React.ReactNode, text: string }) {
   return (

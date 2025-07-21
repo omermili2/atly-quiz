@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { type QuizQuestion, getTotalQuestions } from '@/lib/questions';
-import { ROUTES } from '@/lib/constants';
+import { getQuestionById, getTotalQuestions, type QuizQuestion } from '@/lib/questions';
+import { ROUTES } from '@/lib/routes';
 import Button from '@/components/ui/Button';
 import AnswerCard from './AnswerCard';
 import MultipleChoiceCard from './MultipleChoiceCard';
+import analytics from '@/lib/analytics';
 
 type Props = {
   question: QuizQuestion;
@@ -46,7 +47,7 @@ export default function QuizAnswers({ question, isMultipleChoice }: Props) {
   return (
     <>
       <div className="grid grid-cols-1 gap-6 md:gap-6">
-        {question.answers.map((answer, index) => (
+        {question.answers.map((answer: string, index: number) => (
           isMultipleChoice ? (
             <MultipleChoiceCard
               key={index}

@@ -1,5 +1,7 @@
 import React from 'react';
-import { ATLY_LOGO, ATLY_WEBSITE } from '@/lib/constants';
+
+const ATLY_LOGO = "/atly-logo.png";
+const ATLY_WEBSITE = "https://www.atly.com/";
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';

@@ -7,7 +7,7 @@ import {
   getTotalQuestions, 
   isMultipleChoiceQuestion,
 } from '@/lib/questions';
-import { ROUTES } from '@/lib/constants';
+import { ROUTES } from '@/lib/routes';
 import PageLayout from '@/components/layout/PageLayout';
 import Header from '@/components/layout/Header';
 import Section from '@/components/layout/Section';
