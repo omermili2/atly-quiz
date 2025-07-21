@@ -102,19 +102,19 @@ export default function PricingPage() {
 
         <div className="flex justify-center gap-12 mb-10">
           <div className="text-center text-white/90">
-            <div className="text-xs font-semibold mb-1">GLUTENED-FREE</div>
-            <div className="text-xs font-semibold mb-1">GUARANTEE</div>
-            <div className="text-xs font-semibold">🛡️</div>
+            <div className="text-sm font-semibold mb-1">GLUTENED-FREE</div>
+            <div className="text-sm font-semibold mb-2">GUARANTEE</div>
+            <div className="text-base font-semibold">🛡️</div>
           </div>
           <div className="text-center text-white/90">
-            <div className="text-xs font-semibold mb-1">#1 DIETITIAN&apos;S</div>
-            <div className="text-xs font-semibold mb-1">CHOICE</div>
-            <div className="text-xs font-semibold">🏆</div>
+            <div className="text-sm font-semibold mb-1">#1 DIETITIAN&apos;S</div>
+            <div className="text-sm font-semibold mb-2">CHOICE</div>
+            <div className="text-base font-semibold">🏆</div>
           </div>
           <div className="text-center text-white/90">
-            <div className="text-xs font-semibold mb-1">MOST RELIABLE</div>
-            <div className="text-xs font-semibold">CELIAC APP</div>
-            <div className="text-xs font-semibold">📱</div>
+            <div className="text-sm font-semibold mb-1">MOST RELIABLE</div>
+            <div className="text-sm font-semibold mb-2">CELIAC APP</div>
+            <div className="text-base font-semibold">📱</div>
           </div>
         </div>
       
