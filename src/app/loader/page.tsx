@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Logo from '@/components/ui/Logo';
+import Header from '@/components/layout/Header';
 import analytics from '@/lib/analytics';
 
 const progressCurve = [0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100];
@@ -61,9 +61,8 @@ export default function LoaderPage() {
   if (analysisStatus === 'analyzing') {
     return (
       <main className="flex flex-col items-center justify-start min-h-screen text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] p-4 pt-[18vh]">
-        <header className="w-full flex items-center mb-4 justify-center">
-          <Logo />
-        </header>
+        <Header />
+        
         <div className="flex flex-col items-center justify-center w-full max-w-md animate-fade-in">
           <div className="relative flex items-center justify-center mb-8" style={{ width: 220, height: 220 }}>
             <svg className="absolute top-0 left-0" width="220" height="220" style={{ transform: 'rotate(-90deg)' }}>
