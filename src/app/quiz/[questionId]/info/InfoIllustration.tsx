@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React from 'react';
 
 const INFO_ILLUSTRATIONS: Record<string, string> = {
   "Personalized for You": "/images/info/personalized.jpg",
@@ -17,22 +16,20 @@ function getIllustrationUrl(title: string): string {
 }
 
 export default function InfoIllustration({ title }: { title: string }) {
-  const [imageSrc, setImageSrc] = useState(getIllustrationUrl(title));
+  const imageUrl = getIllustrationUrl(title);
   
   return (
-    <Image
-      src={imageSrc}
+    <img
+      src={imageUrl}
       alt={`Illustration for ${title}`}
-      width={128}
-      height={128}
       className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-full shadow-lg mb-2 md:mb-4"
       style={{ background: 'none' }}
-      onError={() => {
-        if (imageSrc !== DEFAULT_ILLUSTRATION) {
-          setImageSrc(DEFAULT_ILLUSTRATION);
+      onError={(e) => {
+        const target = e.target as HTMLImageElement;
+        if (target.src !== DEFAULT_ILLUSTRATION) {
+          target.src = DEFAULT_ILLUSTRATION;
         }
       }}
-      priority={false} // Not critical for LCP
     />
   );
 } 

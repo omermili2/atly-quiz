@@ -43,3 +43,37 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
+
+[data-responsive] {
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: 50% !important;
+}
+
+@media (min-width: 768px) {
+  [data-responsive] {
+    width: 128px !important;
+    height: 128px !important;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+img[loading="eager"] {
+  content-visibility: auto;
+  contain-intrinsic-size: 96px 96px;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+img {
+  transition: none;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}

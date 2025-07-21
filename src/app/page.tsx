@@ -1,6 +1,5 @@
 "use client";
 import Link from 'next/link';
-import Image from 'next/image';
 import { ShieldCheck, Award, Map } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
@@ -119,9 +118,9 @@ export default function WelcomePage() {
 
           <div className="flex items-center gap-2 text-white/80 mt-2">
             <div className="flex -space-x-2">
-                <Image src="https://i.pravatar.cc/40?u=a" alt="user 1" width={24} height={24} className="w-6 h-6 rounded-full border-2 border-white/50" loading="lazy" />
-                <Image src="https://i.pravatar.cc/40?u=b" alt="user 2" width={24} height={24} className="w-6 h-6 rounded-full border-2 border-white/50" loading="lazy" />
-                <Image src="https://i.pravatar.cc/40?u=c" alt="user 3" width={24} height={24} className="w-6 h-6 rounded-full border-2 border-white/50" loading="lazy" />
+                <img src="https://i.pravatar.cc/40?u=a" alt="user 1" className="w-6 h-6 rounded-full border-2 border-white/50" />
+                <img src="https://i.pravatar.cc/40?u=b" alt="user 2" className="w-6 h-6 rounded-full border-2 border-white/50" />
+                <img src="https://i.pravatar.cc/40?u=c" alt="user 3" className="w-6 h-6 rounded-full border-2 border-white/50" />
             </div>
             <span className="text-sm font-semibold">341 joined today 🙌</span>
           </div>
