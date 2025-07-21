@@ -12,7 +12,8 @@ export default function Logo() {
           height: '144px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          backgroundColor: 'transparent'
         }}
       >
         <img 
@@ -26,7 +27,8 @@ export default function Logo() {
             height: '144px',
             objectFit: 'contain',
             background: 'none',
-            display: 'block'
+            display: 'block',
+            maxWidth: '100%'
           }} 
         />
       </div>
