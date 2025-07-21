@@ -19,13 +19,18 @@ export default function PricingPage() {
 
   const handlePlanChange = (planType: PlanType) => {
     setSelectedPlan(planType);
-    analytics.trackPlanSelected(planType);
+    analytics.trackPlanSelection(planType);
   };
 
   const handleCheckoutStart = () => {
-    const planPrice = selectedPlan === 'annual' ? 69.99 : 13.99;
-    analytics.trackCheckoutStarted(selectedPlan, planPrice);
+    analytics.trackCheckoutStart(selectedPlan);
     // Add your checkout logic here
+  };
+
+  const handleTrialStart = () => {
+    // This should be called when user actually submits the form with credit card details
+    analytics.trackTrialStart(selectedPlan);
+    // Add your trial start logic here
   };
 
   const formatCardNumber = (value: string) => {

@@ -20,7 +20,7 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
     setIsSelected(newSelectedState);
     
     if (newSelectedState) {
-      analytics.trackAnswerSelected(questionId, answer, 'multiple');
+      analytics.trackAnswer(questionId, answer, 'multiple');
     }
     
     try {

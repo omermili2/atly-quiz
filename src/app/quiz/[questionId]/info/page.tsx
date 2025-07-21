@@ -35,7 +35,7 @@ const INFO_DATA: Record<string, InfoData> = {
     facts: [
       { icon: "🧬", text: "Custom recommendations based on your condition" },
       { icon: "📍", text: "Local spots that match your safety requirements" },
-      { icon: "⚡", text: "Save 2+ hours per week finding safe places", highlight: "2+ hours" }
+      { icon: "⚡", text: "Save time per week finding safe places", highlight: "Save time" }
     ],
     cta: "Get personalized recommendations"
   },

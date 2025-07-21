@@ -19,12 +19,16 @@ export default function QuizEndPage() {
   const router = useRouter();
 
   useEffect(() => {
-    analytics.trackQuizCompleted();
-    analytics.trackUserSegment();
+    analytics.trackQuizEndViewed();
     
     const btn = document.getElementById('continue-btn');
     if (btn) btn.focus();
   }, []);
+
+  const handleContinueClick = () => {
+    analytics.trackContinueClick();
+    router.push('/loader');
+  };
 
   return (
     <PageLayout variant="default">
@@ -62,7 +66,7 @@ export default function QuizEndPage() {
           size="lg"
           className="max-w-md mb-2"
           fullWidth
-          onClick={() => router.push('/loader')}
+          onClick={handleContinueClick}
         >
           Continue
         </Button>

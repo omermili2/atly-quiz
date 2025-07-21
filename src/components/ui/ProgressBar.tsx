@@ -1,25 +1,38 @@
 import React from 'react';
 import { COMPOUND_STYLES, LAYOUT } from '@/lib/design';
+import analytics from '@/lib/analytics';
 
 interface ProgressBarProps {
   progress: number;
   backUrl?: string | null;
   skipUrl?: string;
   className?: string;
+  questionId?: number;
 }
 
 export default function ProgressBar({ 
   progress, 
   backUrl, 
   skipUrl, 
-  className = '' 
+  className = '',
+  questionId
 }: ProgressBarProps) {
+  
+  const handleBackClick = () => {
+    analytics.trackBackClick(questionId);
+  };
+
+  const handleSkipClick = () => {
+    analytics.trackSkipClick(questionId);
+  };
+
   return (
     <div className={`${LAYOUT.FLEX_CENTER_BETWEEN} mb-4 md:mb-8 ${LAYOUT.W_FULL} ${className}`}>
       <div className="flex-shrink-0 w-12 md:w-16">
         {backUrl ? (
           <a 
             href={backUrl} 
+            onClick={handleBackClick}
             className={`${COMPOUND_STYLES.SECONDARY_LINK} ${LAYOUT.FLEX_CENTER}`}
           >
             Back
@@ -42,6 +55,7 @@ export default function ProgressBar({
         {skipUrl && (
           <a 
             href={skipUrl} 
+            onClick={handleSkipClick}
             className={COMPOUND_STYLES.SECONDARY_LINK}
           >
             Skip

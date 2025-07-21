@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Logo from '@/components/ui/Logo';
+import analytics from '@/lib/analytics';
 
 const progressCurve = [0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100];
 const stepPercents = [0, 10, 35, 60, 72, 85];
@@ -20,6 +21,7 @@ export default function LoaderPage() {
   const [percent, setPercent] = useState(0);
 
   useEffect(() => {
+    analytics.trackAnalysisPageViewed();
     
     const totalDuration = 10000;
     const steps = progressCurve.length;

@@ -10,8 +10,8 @@ interface Props {
 
 export default function InfoTracker({ questionId, infoTitle }: Props) {
   useEffect(() => {
-    analytics.trackInfoPageViewed(questionId, infoTitle);
-  }, [questionId, infoTitle]);
+    analytics.trackInfoPageViewed(questionId);
+  }, [questionId]);
 
   return null;
 } 

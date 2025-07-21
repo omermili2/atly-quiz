@@ -42,7 +42,7 @@ export default function AnswerCard({ questionId, answer, disabled = false, onSel
     setIsSelected(true);
     onSelect?.();
     
-    analytics.trackAnswerSelected(questionId, answer, 'single');
+    analytics.trackAnswer(questionId, answer, 'single');
     
     setTimeout(() => {
       const nextRoute = getNextRoute(questionId);

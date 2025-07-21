@@ -70,6 +70,7 @@ export default function QuestionPage() {
             progress={progress}
             backUrl={previousPageUrl}
             skipUrl={skipUrl}
+            questionId={questionIdNum}
             className=""
           />
 
