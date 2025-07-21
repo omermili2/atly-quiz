@@ -5,13 +5,14 @@ import type {
   QuizAnswer
 } from './types';
 
-const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || 'YOUR_MIXPANEL_TOKEN';
+const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN!;
 
 if (typeof window !== 'undefined') {
   mixpanel.init(MIXPANEL_TOKEN, {
-    debug: process.env.NODE_ENV === 'development',
-    track_pageview: false, // We'll track manually
+    debug: false,
+    track_pageview: false,
     persistence: 'localStorage',
+    ignore_dnt: true, // Ignore "Do Not Track" setting for development/testing
   });
 }
 
@@ -166,4 +167,5 @@ class AnalyticsService {
 }
 
 const analytics = new AnalyticsService();
+
 export default analytics; 
