@@ -82,21 +82,11 @@ function getNextPageUrl(questionId: number): string {
     : '/quiz-end';
 }
 
-function AnimatedFact({ fact, delay }: { fact: InfoData['facts'][0], delay: number }) {
+function StaticFact({ fact }: { fact: InfoData['facts'][0] }) {
   return (
     <div className="w-full flex justify-center">
-      <div 
-        className="flex items-center gap-2 md:gap-4 text-white/90 animate-fade-in bg-white/10 backdrop-blur-sm rounded-xl p-2 md:p-4 w-fit"
-        style={{ animationDelay: `${delay}ms` }}
-      >
-        <span 
-          className="text-xl md:text-3xl animate-bounce" 
-          style={{ 
-            animationDelay: `${delay + 200}ms`,
-            animationDuration: '1s',
-            animationIterationCount: '2'
-          }}
-        >
+      <div className="flex items-center gap-2 md:gap-4 text-white/90 bg-white/10 backdrop-blur-sm rounded-xl p-2 md:p-4 w-fit">
+        <span className="text-xl md:text-3xl">
           {fact.icon}
         </span>
         <span className="text-sm md:text-lg font-medium">
@@ -138,10 +128,9 @@ function InfoContent({ question }: { question: QuizQuestion }) {
       {/* Facts Container */}
       <div className="w-full space-y-4 md:space-y-6 max-w-2xl">
         {infoData.facts.map((fact, index) => (
-          <AnimatedFact 
+          <StaticFact 
             key={index} 
             fact={fact} 
-            delay={300 + (index * 150)} 
           />
         ))}
       </div>
