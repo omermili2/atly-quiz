@@ -1,6 +1,7 @@
 'use client';
 import { Check, CreditCard } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Logo from '@/components/ui/Logo';
 import Button from '@/components/ui/Button';
 import type { PlanType } from '@/lib/types';
@@ -208,9 +209,9 @@ export default function PricingPage() {
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ff7eb3] focus:border-transparent outline-none text-gray-900 font-medium"
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex gap-1">
-                  <img src="https://img.icons8.com/color/32/visa.png" alt="Visa" className="w-7 h-6" />
-                  <img src="https://img.icons8.com/color/32/mastercard.png" alt="Mastercard" className="w-7 h-6" />
-                  <img src="https://img.icons8.com/color/32/amex.png" alt="Amex" className="w-7 h-6" />
+                  <Image src="https://img.icons8.com/color/32/visa.png" alt="Visa" width={28} height={24} className="w-7 h-6" loading="lazy" />
+                  <Image src="https://img.icons8.com/color/32/mastercard.png" alt="Mastercard" width={28} height={24} className="w-7 h-6" loading="lazy" />
+                  <Image src="https://img.icons8.com/color/32/amex.png" alt="Amex" width={28} height={24} className="w-7 h-6" loading="lazy" />
                 </div>
               </div>
             </div>

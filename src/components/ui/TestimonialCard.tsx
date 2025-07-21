@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Star } from 'lucide-react';
 import type { Testimonial } from '@/lib/types';
 
@@ -31,10 +32,13 @@ export default function TestimonialCard({
       </p>
       <div className="flex items-center justify-between mt-1">
         <div className="flex items-center gap-1.5">
-          <img 
+          <Image 
             src={testimonial.avatar} 
             alt={testimonial.name} 
+            width={24}
+            height={24}
             className="w-6 h-6 rounded-full border-2 border-white" 
+            loading="lazy" // Not critical for initial load
           />
           <span className="text-sm font-bold">{testimonial.name}</span>
         </div>
