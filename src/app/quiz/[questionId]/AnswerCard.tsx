@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Check } from 'lucide-react';
 import { getQuestionById, getTotalQuestions } from '@/lib/questions';
 import { ROUTES } from '@/lib/routes';
+import { COMPOUND_STYLES, COLORS, COMPONENTS, LAYOUT } from '@/lib/design';
 import Card from '@/components/ui/Card';
 import analytics from '@/lib/analytics';
 
@@ -64,18 +65,18 @@ export default function AnswerCard({ questionId, answer, disabled = false, onSel
       ariaPressed={isSelected}
       className={disabled && !isSelected ? 'pointer-events-none' : ''}
     >
-      <div className="flex items-center justify-between">
-        <p className={`text-sm md:text-lg font-semibold leading-snug break-words hyphens-none pr-2 flex-1 text-left ${
-          isSelected ? 'text-white' : 'text-[#2b2e7a]'
+      <div className={LAYOUT.FLEX_CENTER_BETWEEN}>
+        <p className={`${COMPOUND_STYLES.ANSWER_TEXT} ${
+          isSelected ? COLORS.WHITE : 'text-[#2b2e7a]'
         }`}>
           {answer}
         </p>
         {isSelected && (
           <div
-            className="bg-white/25 rounded-full h-5 w-5 md:h-6 md:w-6 flex items-center justify-center transition-all duration-300 ml-3 flex-shrink-0"
+            className={`${COLORS.WHITE_25_BG} rounded-full ${COMPONENTS.ICON_SMALL} ${LAYOUT.FLEX_CENTER} transition-all duration-300 ml-3 flex-shrink-0`}
             aria-hidden="true"
           >
-            <Check size={14} className="text-white md:w-4 md:h-4" />
+            <Check size={14} className={`${COLORS.WHITE} md:w-4 md:h-4`} />
           </div>
         )}
       </div>

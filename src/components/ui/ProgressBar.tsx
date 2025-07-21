@@ -1,4 +1,5 @@
 import React from 'react';
+import { COMPOUND_STYLES, LAYOUT } from '@/lib/design';
 
 interface ProgressBarProps {
   progress: number;
@@ -14,12 +15,12 @@ export default function ProgressBar({
   className = '' 
 }: ProgressBarProps) {
   return (
-    <div className={`flex items-center justify-between mb-4 md:mb-8 w-full ${className}`}>
+    <div className={`${LAYOUT.FLEX_CENTER_BETWEEN} mb-4 md:mb-8 ${LAYOUT.W_FULL} ${className}`}>
       <div className="flex-shrink-0 w-12 md:w-16">
         {backUrl ? (
           <a 
             href={backUrl} 
-            className="text-gray-300 text-sm md:text-base hover:text-gray-200 transition-colors duration-150 flex items-center"
+            className={`${COMPOUND_STYLES.SECONDARY_LINK} ${LAYOUT.FLEX_CENTER}`}
           >
             Back
           </a>
@@ -41,7 +42,7 @@ export default function ProgressBar({
         {skipUrl && (
           <a 
             href={skipUrl} 
-            className="text-gray-300 text-sm md:text-base hover:text-gray-200 transition-colors duration-150"
+            className={COMPOUND_STYLES.SECONDARY_LINK}
           >
             Skip
           </a>

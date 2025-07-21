@@ -1,4 +1,5 @@
 import React from 'react';
+import { COLORS, LAYOUT, TYPOGRAPHY } from '@/lib/design';
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -7,9 +8,9 @@ interface PageLayoutProps {
 }
 
 const layoutVariants = {
-  default: 'flex flex-col items-center min-h-screen p-2 md:p-8 text-center',
-  landing: 'flex flex-col min-h-screen p-4 md:p-6 text-center text-white',
-  centered: 'flex flex-col items-center justify-center min-h-screen px-4 py-6 md:py-8',
+  default: `${LAYOUT.FLEX_CENTER_COL} ${LAYOUT.MIN_H_SCREEN} p-2 md:p-8 ${TYPOGRAPHY.TEXT_CENTER}`,
+  landing: `${LAYOUT.FLEX_CENTER_COL} ${LAYOUT.MIN_H_SCREEN} ${LAYOUT.P_4_8} ${TYPOGRAPHY.TEXT_CENTER} ${COLORS.WHITE}`,
+  centered: `${LAYOUT.FLEX_CENTER_COL} justify-center ${LAYOUT.MIN_H_SCREEN} px-4 py-6 md:py-8`,
 };
 
 export default function PageLayout({ 
@@ -18,8 +19,7 @@ export default function PageLayout({
   variant = 'default' 
 }: PageLayoutProps) {
   const variantClasses = layoutVariants[variant];
-  const baseClasses = 'bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]';
-  const allClasses = `${baseClasses} ${variantClasses} ${className}`.trim();
+  const allClasses = `${COLORS.PRIMARY_GRADIENT} ${variantClasses} ${className}`.trim();
 
   return (
     <main className={allClasses}>

@@ -9,6 +9,7 @@ import {
   getTotalQuestions,
   type QuizQuestion 
 } from '@/lib/questions';
+import { COMPOUND_STYLES, COLORS, TYPOGRAPHY, LAYOUT, COMPONENTS, RESPONSIVE } from '@/lib/design';
 import Button from '@/components/ui/Button';
 import InfoIllustration from './InfoIllustration';
 import QuizHeader from '../components/QuizHeader';
@@ -84,16 +85,16 @@ function getNextPageUrl(questionId: number): string {
 
 function StaticFact({ fact }: { fact: InfoData['facts'][0] }) {
   return (
-    <div className="w-full flex justify-center">
-      <div className="flex items-center gap-2 md:gap-4 text-white/90 bg-white/10 backdrop-blur-sm rounded-xl p-2 md:p-4 w-fit">
-        <span className="text-xl md:text-3xl">
+    <div className={`${LAYOUT.W_FULL} ${LAYOUT.FLEX_CENTER}`}>
+      <div className={COMPOUND_STYLES.GLASS_CARD}>
+        <span className={COMPONENTS.ICON_MEDIUM}>
           {fact.icon}
         </span>
-        <span className="text-sm md:text-lg font-medium">
+        <span className={`${TYPOGRAPHY.BODY_SMALL_LARGE} ${TYPOGRAPHY.FONT_MEDIUM}`}>
           {fact.highlight ? (
             <>
               {fact.text.split(fact.highlight)[0]}
-              <span className="text-pink-300 font-bold">{fact.highlight}</span>
+              <span className={`${COLORS.PINK_300} ${TYPOGRAPHY.FONT_BOLD}`}>{fact.highlight}</span>
               {fact.text.split(fact.highlight)[1]}
             </>
           ) : (
@@ -112,21 +113,21 @@ function InfoContent({ question }: { question: QuizQuestion }) {
   if (!infoData) return null;
   
   return (
-    <div className="w-full flex flex-col items-center pt-2 md:pt-12 px-4 max-w-3xl mx-auto">
+    <div className={`${LAYOUT.W_FULL} ${LAYOUT.FLEX_CENTER_COL} ${LAYOUT.PT_2_12} px-4 ${LAYOUT.MAX_W_3XL} mx-auto`}>
       {/* Header Image */}
       <InfoIllustration title={question.info.title} />
       
       {/* Title & Subtitle */}
-      <h1 className="text-lg md:text-4xl font-extrabold text-white mb-1 md:mb-2 drop-shadow-lg text-center whitespace-nowrap">
+      <h1 className={COMPOUND_STYLES.SECONDARY_HEADING}>
         {infoData.title}
       </h1>
       
-      <p className="text-base md:text-xl text-white/80 mb-4 md:mb-8 font-medium text-center">
+      <p className={COMPOUND_STYLES.SUBTITLE}>
         {infoData.subtitle}
       </p>
       
       {/* Facts Container */}
-      <div className="w-full space-y-4 md:space-y-6 max-w-2xl">
+      <div className={`${LAYOUT.W_FULL} ${LAYOUT.SPACE_Y_4_6} ${LAYOUT.MAX_W_2XL}`}>
         {infoData.facts.map((fact, index) => (
           <StaticFact 
             key={index} 
@@ -136,8 +137,8 @@ function InfoContent({ question }: { question: QuizQuestion }) {
       </div>
       
       {/* CTA Text */}
-      <div className="mt-4 md:mt-8 text-center">
-        <p className="text-pink-200 font-semibold text-base md:text-xl">
+      <div className={`${LAYOUT.MT_4_8} ${TYPOGRAPHY.TEXT_CENTER}`}>
+        <p className={COMPOUND_STYLES.CTA_TEXT}>
           {infoData.cta}
         </p>
       </div>
@@ -150,17 +151,17 @@ function InfoNavigation({ questionId }: { questionId: number }) {
   const previousPageUrl = `/quiz/${questionId}`;
   
   return (
-    <div className="w-full max-w-xs mt-4 md:mt-8">
-      <Link href={nextPageUrl} className="w-full">
-        <Button fullWidth className="mb-2 md:mb-4">
+    <div className={`${COMPONENTS.BUTTON_CONTAINER} ${LAYOUT.MT_4_8}`}>
+      <Link href={nextPageUrl} className={LAYOUT.W_FULL}>
+        <Button fullWidth className={`${LAYOUT.MB_1_2} md:mb-4`}>
           Continue
         </Button>
       </Link>
       
-      <div className="text-center">
+      <div className={TYPOGRAPHY.TEXT_CENTER}>
         <a 
           href={previousPageUrl} 
-          className="text-gray-300 text-sm md:text-base hover:text-gray-200 transition-colors duration-150"
+          className={COMPOUND_STYLES.SECONDARY_LINK}
         >
           Back
         </a>
@@ -180,7 +181,7 @@ export default function InfoPage() {
   }
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-4 md:p-8 text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
+    <main className={COMPOUND_STYLES.PAGE_CONTAINER}>
       <InfoTracker 
         questionId={questionIdNum} 
         infoTitle={question.info.title} 

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Check } from 'lucide-react';
+import { COMPOUND_STYLES, COLORS, COMPONENTS, LAYOUT } from '@/lib/design';
 import Card from '@/components/ui/Card';
 import analytics from '@/lib/analytics';
 
@@ -46,25 +47,23 @@ export default function MultipleChoiceCard({ questionId, answer, onSelectionChan
       ariaChecked={isSelected}
       ariaLabel={`${isSelected ? 'Deselect' : 'Select'} ${answer}`}
     >
-      <div className="flex items-center justify-between">
-        <p 
-          className={`text-sm md:text-lg font-semibold leading-snug break-words hyphens-none pr-2 flex-1 text-left ${
-            isSelected ? 'text-white' : 'text-[#2b2e7a]'
-          }`}
-        >
+      <div className={LAYOUT.FLEX_CENTER_BETWEEN}>
+        <p className={`${COMPOUND_STYLES.ANSWER_TEXT} ${
+          isSelected ? COLORS.WHITE : 'text-[#2b2e7a]'
+        }`}>
           {answer}
         </p>
         <div
           className={`
-            rounded-full h-5 w-5 md:h-6 md:w-6 flex items-center justify-center transition-all duration-300 ml-3 flex-shrink-0
+            rounded-full ${COMPONENTS.ICON_SMALL} ${LAYOUT.FLEX_CENTER} transition-all duration-300 ml-3 flex-shrink-0
             ${isSelected 
-              ? 'bg-white/25' 
+              ? COLORS.WHITE_25_BG
               : 'border-2 border-gray-300'
             }
           `}
           aria-hidden="true"
         >
-          {isSelected && <Check size={14} className="text-white md:w-4 md:h-4" />}
+          {isSelected && <Check size={14} className={`${COLORS.WHITE} md:w-4 md:h-4`} />}
         </div>
       </div>
     </Card>
