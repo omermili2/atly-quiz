@@ -1,7 +1,7 @@
 'use client';
 import { Check, CreditCard } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import Logo from '@/components/ui/Logo';
+import Header from '@/components/layout/Header';
 import Button from '@/components/ui/Button';
 import type { PlanType } from '@/lib/types';
 import analytics from '@/lib/analytics';
@@ -96,9 +96,7 @@ export default function PricingPage() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 py-8 bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
-      <header className="w-full flex items-center justify-center">
-        <Logo />
-      </header>
+      <Header />
 
         <div className="flex justify-center gap-12 mb-10">
           <div className="text-center text-white/90">
