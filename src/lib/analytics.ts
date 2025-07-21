@@ -16,7 +16,7 @@ if (typeof window !== 'undefined') {
 }
 
 // Simplified event types
-type PageEvent = 'Landing Page' | 'Quiz Question' | 'Quiz Info' | 'Quiz End' | 'Analysis' | 'Pricing';
+type PageEvent = 'Landing Page' | 'Quiz End' | 'Analysis' | 'Pricing' | string; // Allow dynamic page names
 type ActionEvent = 'continue' | 'back' | 'skip';
 
 class AnalyticsService {
@@ -132,11 +132,11 @@ class AnalyticsService {
   }
 
   trackQuestionViewed(questionId: number, questionText: string): void {
-    this.trackPageVisit('Quiz Question', questionId, questionText);
+    this.trackPageVisit(`Quiz Question ${questionId}`, questionId, questionText);
   }
 
   trackInfoPageViewed(questionId: number, infoTitle: string): void {
-    this.trackPageVisit('Quiz Info', questionId, infoTitle);
+    this.trackPageVisit(`Quiz Info ${questionId}`, questionId, infoTitle);
   }
 
   trackQuizEndViewed(): void {
