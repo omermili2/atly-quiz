@@ -5,6 +5,7 @@ import type {
   QuizAnswer
 } from './types';
 
+// Production analytics with clean event tracking
 const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN!;
 
 if (typeof window !== 'undefined') {
