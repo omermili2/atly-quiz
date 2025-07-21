@@ -24,7 +24,6 @@ export default function PricingPage() {
 
   const handleCheckoutStart = () => {
     analytics.trackCheckoutStart(selectedPlan);
-    // Add your checkout logic here
   };
 
   const formatCardNumber = (value: string) => {
@@ -98,7 +97,7 @@ export default function PricingPage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 py-8 bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]">
       <header className="w-full flex items-center justify-center">
-        <Logo size="md" />
+        <Logo />
       </header>
 
         <div className="flex justify-center gap-12 mb-10">

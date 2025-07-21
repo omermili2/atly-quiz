@@ -32,7 +32,7 @@ export default function QuizEndPage() {
 
   return (
     <PageLayout variant="default">
-      <Header logoSize="lg" spacing="sm" />
+      <Header />
       
       <Section maxWidth="2xl" className="flex flex-col items-center justify-center animate-fade-in">
         <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 mt-2 drop-shadow-lg">

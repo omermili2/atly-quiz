@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { notFound } from 'next/navigation';
-import { useParams } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { 
   getQuestionById, 
@@ -11,8 +10,8 @@ import {
 } from '@/lib/questions';
 import { COMPOUND_STYLES, COLORS, TYPOGRAPHY, LAYOUT, COMPONENTS } from '@/lib/design';
 import Button from '@/components/ui/Button';
+import Header from '@/components/layout/Header';
 import InfoIllustration from './InfoIllustration';
-import QuizHeader from '../components/QuizHeader';
 import InfoTracker from './InfoTracker';
 
 interface InfoData {
@@ -187,7 +186,7 @@ export default function InfoPage() {
         infoTitle={question.info.title} 
       />
       
-      <QuizHeader />
+      <Header />
       
       <InfoContent question={question} />
       

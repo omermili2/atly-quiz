@@ -19,9 +19,6 @@ if (typeof window !== 'undefined') {
 type PageEvent = 'Landing Page' | 'Quiz Question' | 'Quiz Info' | 'Quiz End' | 'Analysis' | 'Pricing';
 type ActionEvent = 'continue' | 'back' | 'skip';
 
-// Analytics properties type
-type AnalyticsProperties = Record<string, string | number | boolean | string[] | QuizAnswer[] | null>;
-
 class AnalyticsService {
   private sessionId: string;
 
@@ -34,7 +31,7 @@ class AnalyticsService {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  private track(eventName: string, properties?: AnalyticsProperties): void {
+  private track(eventName: string, properties?: Record<string, string | number | boolean | QuizAnswer | QuizAnswer[] | null>): void {
     if (typeof window === 'undefined') return;
 
     try {
@@ -85,7 +82,7 @@ class AnalyticsService {
     this.track('Answer Selected', {
       question_id: questionId,
       question_text: questionText || null,
-      answer: Array.isArray(answer) ? answer : [answer],
+      answer: answer,
       question_type: questionType,
     });
 

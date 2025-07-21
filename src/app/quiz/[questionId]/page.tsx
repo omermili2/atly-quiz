@@ -13,7 +13,7 @@ import Header from '@/components/layout/Header';
 import Section from '@/components/layout/Section';
 import ProgressBar from '@/components/ui/ProgressBar';
 import QuizAnswers from './QuizAnswers';
-import QuestionTracker from './components/QuestionTracker';
+import QuestionTracker from './QuestionTracker';
 
 export default function QuestionPage() {
   const params = useParams();
@@ -58,7 +58,7 @@ export default function QuestionPage() {
         isFirstQuestion={questionIdNum === 1}
       />
       
-      <Header logoSize="lg" spacing="sm" className="mt-2 md:mt-2 -mb-1 md:-mb-4" />
+      <Header />
       
       <Section maxWidth="2xl" spacing="sm" className="mt-0 md:mt-0 flex-1 flex flex-col pt-4 md:pt-12">
         <div className="space-y-2 md:space-y-6">

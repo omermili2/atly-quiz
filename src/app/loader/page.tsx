@@ -62,7 +62,7 @@ export default function LoaderPage() {
     return (
       <main className="flex flex-col items-center justify-start min-h-screen text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] p-4 pt-[18vh]">
         <header className="w-full flex items-center mb-4 justify-center">
-          <Logo size="lg" />
+          <Logo />
         </header>
         <div className="flex flex-col items-center justify-center w-full max-w-md animate-fade-in">
           <div className="relative flex items-center justify-center mb-8" style={{ width: 220, height: 220 }}>
