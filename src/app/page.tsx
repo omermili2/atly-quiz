@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import Link from 'next/link';
 import { ShieldCheck, Award, Map } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -7,14 +7,14 @@ import TestimonialCard from '@/components/ui/TestimonialCard';
 import type { Testimonial } from '@/lib/types';
 import analytics from '@/lib/analytics';
 
-const TESTIMONIAL_ANIMATION_DELAY = 50;
-const TESTIMONIAL_STAGGER_DELAY = 100;
+const TESTIMONIAL_ANIMATION_DELAY = 100;
+const TESTIMONIAL_STAGGER_DELAY = 50;
 
-function ProofItem({ icon, text }: { icon: React.ReactNode, text: string }) {
+function ProofItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-white/80">
-      <span className="font-bold text-xs tracking-wider uppercase !font-extrabold text-center md:text-left">{text}</span>
+    <div className="flex items-center gap-1 text-xs md:text-sm font-medium">
       {icon}
+      <span>{text}</span>
     </div>
   );
 }

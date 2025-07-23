@@ -6,8 +6,6 @@ import analytics from '@/lib/analytics';
 interface Props {
   questionId: number;
   questionText: string;
-  questionType: 'single' | 'multiple';
-  isFirstQuestion: boolean;
 }
 
 export default function QuestionTracker({ questionId, questionText }: Props): React.JSX.Element | null {

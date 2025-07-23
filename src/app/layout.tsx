@@ -1,34 +1,37 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+'use client';
+import { Inter } from 'next/font/google'
+import './globals.css'
+import Header from '@/components/layout/Header';
+import { COLORS } from '@/lib/design';
+import { usePathname } from 'next/navigation';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Atly Quiz",
-  description: "A quiz to personalize your gluten-free journey.",
-};
+const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
+  const pathname = usePathname();
+  const isLandingPage = pathname === '/';
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-b from-[#2b2e7a] via-[#5a2d91] to-[#a259c6]`}
-      >
-        {children}
+      <head>
+        <title>Atly Quiz - Find Safe Gluten-Free Places</title>
+        <meta name="description" content="Discover trusted gluten-free restaurants and foods with our personalized quiz" />
+      </head>
+      <body className={`${inter.className} ${COLORS.PRIMARY_GRADIENT} min-h-screen`}>
+        <div className="min-h-screen flex flex-col">
+          {/* Conditional Header - hidden on landing page for clean experience */}
+          {!isLandingPage && <Header />}
+          
+          {/* Page Content */}
+          <div className="flex-1">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
-  );
+  )
 }

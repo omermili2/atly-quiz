@@ -19,7 +19,7 @@ export default function PageLayout({
   variant = 'default' 
 }: PageLayoutProps) {
   const variantClasses = layoutVariants[variant];
-  const allClasses = `${COLORS.PRIMARY_GRADIENT} ${variantClasses} ${className}`.trim();
+  const allClasses = `${variantClasses} ${className}`.trim();
 
   return (
     <main className={allClasses}>

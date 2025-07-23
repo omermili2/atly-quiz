@@ -8,9 +8,8 @@ import {
   getTotalQuestions,
   type QuizQuestion 
 } from '@/lib/questions';
-import { COMPOUND_STYLES, COLORS, TYPOGRAPHY, LAYOUT, COMPONENTS } from '@/lib/design';
+import { COMPOUND_STYLES, COLORS, TYPOGRAPHY, LAYOUT, COMPONENTS, RESPONSIVE } from '@/lib/design';
 import Button from '@/components/ui/Button';
-import Header from '@/components/layout/Header';
 import InfoIllustration from './InfoIllustration';
 import InfoTracker from './InfoTracker';
 
@@ -84,12 +83,12 @@ function getNextPageUrl(questionId: number): string {
 
 function StaticFact({ fact }: { fact: InfoData['facts'][0] }) {
   return (
-    <div className={`${LAYOUT.W_FULL} ${LAYOUT.FLEX_CENTER}`}>
-      <div className={COMPOUND_STYLES.GLASS_CARD}>
+    <div className="flex justify-center">
+      <div className={`${LAYOUT.FLEX_CENTER} ${RESPONSIVE.GAP_2_4} ${COLORS.WHITE_90} ${COMPONENTS.CARD_GLASS} ${LAYOUT.P_2_4} w-fit max-w-full`}>
         <span className={COMPONENTS.ICON_MEDIUM}>
           {fact.icon}
         </span>
-        <span className={`${TYPOGRAPHY.BODY_SMALL_LARGE} ${TYPOGRAPHY.FONT_MEDIUM}`}>
+        <span className={`${TYPOGRAPHY.BODY_SMALL_LARGE} ${TYPOGRAPHY.FONT_MEDIUM} text-center`}>
           {fact.highlight ? (
             <>
               {fact.text.split(fact.highlight)[0]}
@@ -110,9 +109,9 @@ function InfoContent({ question }: { question: QuizQuestion }) {
   
   const infoData = INFO_DATA[question.info.title];
   if (!infoData) return null;
-  
+
   return (
-    <div className={`${LAYOUT.W_FULL} ${LAYOUT.FLEX_CENTER_COL} ${LAYOUT.PT_2_12} px-4 ${LAYOUT.MAX_W_3XL} mx-auto`}>
+    <div className={`${LAYOUT.W_FULL} ${LAYOUT.FLEX_CENTER_COL} pt-1 md:pt-3 px-4 ${LAYOUT.MAX_W_3XL} mx-auto`}>
       {/* Header Image */}
       <InfoIllustration title={question.info.title} />
       
@@ -129,14 +128,14 @@ function InfoContent({ question }: { question: QuizQuestion }) {
       <div className={`${LAYOUT.W_FULL} ${LAYOUT.SPACE_Y_4_6} ${LAYOUT.MAX_W_2XL}`}>
         {infoData.facts.map((fact, index) => (
           <StaticFact 
-            key={index} 
+            key={index}
             fact={fact} 
           />
         ))}
       </div>
       
       {/* CTA Text */}
-      <div className={`${LAYOUT.MT_4_8} ${TYPOGRAPHY.TEXT_CENTER}`}>
+      <div className="mt-6 md:mt-12 text-center">
         <p className={COMPOUND_STYLES.CTA_TEXT}>
           {infoData.cta}
         </p>
@@ -180,17 +179,17 @@ export default function InfoPage() {
   }
 
   return (
-    <main className={COMPOUND_STYLES.PAGE_CONTAINER}>
-      <InfoTracker 
-        questionId={questionIdNum} 
-        infoTitle={question.info.title} 
-      />
-      
-      <Header />
-      
-      <InfoContent question={question} />
-      
-      <InfoNavigation questionId={questionIdNum} />
-    </main>
+    <div className="flex-1">
+      <main className="flex flex-col items-center min-h-screen p-4 md:p-8 text-center">
+        <InfoTracker 
+          questionId={questionIdNum} 
+          infoTitle={question.info.title} 
+        />
+        
+        <InfoContent question={question} />
+        
+        <InfoNavigation questionId={questionIdNum} />
+      </main>
+    </div>
   );
 } 

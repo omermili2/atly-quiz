@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Header from '@/components/layout/Header';
 import analytics from '@/lib/analytics';
 
 const progressCurve = [0, 8, 15, 22, 30, 38, 45, 52, 60, 68, 74, 80, 86, 91, 95, 98, 100];
@@ -16,7 +15,6 @@ const steps = [
 ];
 
 export default function LoaderPage() {
-  const [analysisStatus] = useState('analyzing');
   const [currentStep, setCurrentStep] = useState(0);
   const [percent, setPercent] = useState(0);
 
@@ -58,53 +56,35 @@ export default function LoaderPage() {
     setCurrentStep(textStep);
   }, [percent]);
 
-  if (analysisStatus === 'analyzing') {
-    return (
-      <main className="flex flex-col items-center justify-start min-h-screen text-center bg-gradient-to-br from-[#2b2e7a] via-[#5a2d91] to-[#a259c6] p-4 pt-[18vh]">
-        <Header />
+  return (
+    <div className="flex-1 flex flex-col justify-center items-center min-h-[calc(100vh-140px)] p-6 text-center text-white">
+      <div className="max-w-lg w-full">
+        <h1 className="text-3xl md:text-4xl font-bold mb-8">
+          Analyzing Your Preferences
+        </h1>
         
-        <div className="flex flex-col items-center justify-center w-full max-w-md animate-fade-in">
-          <div className="relative flex items-center justify-center mb-8" style={{ width: 220, height: 220 }}>
-            <svg className="absolute top-0 left-0" width="220" height="220" style={{ transform: 'rotate(-90deg)' }}>
-              <circle
-                cx="110"
-                cy="110"
-                r="100"
-                stroke="#f7e6f0"
-                strokeWidth="10"
-                fill="white"
-              />
-              <circle
-                cx="110"
-                cy="110"
-                r="100"
-                stroke="url(#pinkGradient)"
-                strokeWidth="10"
-                fill="none"
-                strokeDasharray={2 * Math.PI * 100}
-                strokeDashoffset={2 * Math.PI * 100 * (1 - percent / 100)}
-                strokeLinecap="round"
-                style={{ transition: 'stroke-dashoffset 0.7s cubic-bezier(.4,2,.6,1)' }}
-              />
-              <defs>
-                <linearGradient id="pinkGradient" x1="0" y1="0" x2="220" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#ff7eb3" />
-                  <stop offset="1" stopColor="#ff758c" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <span className="text-6xl font-extrabold text-[#23263b] z-10">{percent}%</span>
+        <div className="mb-8">
+          <div className="w-full bg-white/20 rounded-full h-3 mb-4">
+            <div
+              className="bg-gradient-to-r from-blue-400 to-purple-500 h-3 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${percent}%` }}
+            ></div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg mb-4">
-            Analyzing Your Results
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-6 font-medium">
-            {steps[currentStep]}
-          </p>
+          <p className="text-2xl font-semibold">{percent}%</p>
         </div>
-      </main>
-    );
-  }
-
-  return null;
+        
+        <p className="text-lg text-white/80 mb-4">
+          {steps[currentStep]}
+        </p>
+        
+        <div className="animate-pulse">
+          <div className="flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 } 
